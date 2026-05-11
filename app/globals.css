@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white text-grey-700 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /*
+   * Headings only set the typeface here — color is inherited from the
+   * surrounding section. This lets H1/H2 sit correctly on both light
+   * (text-grey-900 via body) and dark (text-white on hero/CTA) sections
+   * without each heading needing an explicit color class.
+   */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    color: inherit;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-7xl px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-7 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-primary px-7 py-[0.625rem] text-base font-semibold text-primary transition hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-7 py-[0.625rem] text-base font-semibold text-white transition hover:bg-white hover:text-primary;
+  }
+}
+
+@layer utilities {
+  /* Paystack-style hero background — drifting blob orbs */
+  .hero-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0.55;
+    will-change: transform;
+  }
+  .hero-blob-1 { animation: blob-drift-1 22s ease-in-out infinite; }
+  .hero-blob-2 { animation: blob-drift-2 26s ease-in-out infinite; }
+  .hero-blob-3 { animation: blob-drift-3 30s ease-in-out infinite; }
+
+  @keyframes blob-drift-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(60px, -40px) scale(1.1); }
+  }
+  @keyframes blob-drift-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-50px, 30px) scale(1.15); }
+  }
+  @keyframes blob-drift-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(40px, 50px) scale(0.95); }
+  }
+
+  /* Subtle drifting dot grid */
+  .hero-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 32px 32px;
+    animation: grid-drift 24s linear infinite;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+  @keyframes grid-drift {
+    from { background-position: 0 0; }
+    to   { background-position: 64px 64px; }
+  }
+
+  /* Floating chip elements that gently drift in the hero */
+  .hero-chip {
+    position: absolute;
+    will-change: transform;
+  }
+  .hero-chip-float-1 { animation: chip-float 9s ease-in-out infinite; }
+  .hero-chip-float-2 { animation: chip-float 11s ease-in-out infinite -2s; }
+  .hero-chip-float-3 { animation: chip-float 13s ease-in-out infinite -5s; }
+  .hero-chip-float-4 { animation: chip-float 10s ease-in-out infinite -7s; }
+
+  @keyframes chip-float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%      { transform: translateY(-14px) rotate(2deg); }
+  }
+
+  /* Topographic / flowing line accent */
+  .hero-flow {
+    animation: flow-shift 18s ease-in-out infinite;
+  }
+  @keyframes flow-shift {
+    0%, 100% { transform: translateX(0); opacity: 0.35; }
+    50%      { transform: translateX(-20px); opacity: 0.55; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-blob-1, .hero-blob-2, .hero-blob-3,
+    .hero-grid, .hero-chip, .hero-flow {
+      animation: none;
+    }
+  }
+
+  /* Page loader: logo pulse + ring */
+  .logo-loader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: logo-breathe 1.6s ease-in-out infinite;
+  }
+  .logo-loader::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top-color: rgba(255, 255, 255, 0.85);
+    animation: logo-spin 1s linear infinite;
+  }
+
+  @keyframes logo-breathe {
+    0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 0 rgba(96, 165, 250, 0)); }
+    50%      { transform: scale(1.06); filter: drop-shadow(0 0 24px rgba(96, 165, 250, 0.45)); }
+  }
+  @keyframes logo-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Loader trailing dots */
+  .loader-dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .loader-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.55);
+    animation: loader-dot 1s ease-in-out infinite;
+  }
+  .loader-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .loader-dots span:nth-child(3) { animation-delay: 0.30s; }
+
+  @keyframes loader-dot {
+    0%, 100% { transform: translateY(0);    opacity: 0.4; }
+    50%      { transform: translateY(-4px); opacity: 1;   }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-loader, .logo-loader::before, .loader-dots span { animation: none; }
+  }
+}
