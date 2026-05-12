@@ -166,4 +166,154 @@
   @media (prefers-reduced-motion: reduce) {
     .logo-loader, .logo-loader::before, .loader-dots span { animation: none; }
   }
+
+  /* =============================================================
+     HERO — magnifier headline + staged entrance
+     ============================================================= */
+
+  /*
+   * Animatable custom properties for the magnifier mask centre.
+   * @property declarations let CSS interpolate them inside the
+   * radial-gradient mask. Falls back gracefully where unsupported.
+   */
+  @property --mx {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 50%;
+  }
+  @property --my {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 50%;
+  }
+
+  /* Magnifier headline: dim text + bright gradient revealed inside a circular
+     mask that auto-roams across the heading. */
+  .magnifier-h1 {
+    position: relative;
+    display: inline-block;
+    text-wrap: balance;
+  }
+
+  .magnifier-base {
+    color: rgba(255, 255, 255, 0.42);
+  }
+
+  .magnifier-bright {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #DBEAFE 30%,
+      #60A5FA 50%,
+      #DBEAFE 70%,
+      #ffffff 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-mask-image: radial-gradient(
+      circle 160px at var(--mx) var(--my),
+      black 35%,
+      transparent 70%
+    );
+    mask-image: radial-gradient(
+      circle 160px at var(--mx) var(--my),
+      black 35%,
+      transparent 70%
+    );
+    animation: magnifier-roam 8s ease-in-out infinite,
+      magnifier-shimmer 6s ease-in-out infinite;
+  }
+
+  @keyframes magnifier-roam {
+    0%   { --mx: 14%; --my: 35%; }
+    20%  { --mx: 78%; --my: 55%; }
+    40%  { --mx: 32%; --my: 75%; }
+    60%  { --mx: 88%; --my: 28%; }
+    80%  { --mx: 50%; --my: 60%; }
+    100% { --mx: 14%; --my: 35%; }
+  }
+  @keyframes magnifier-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+
+  /* Faint round "glass" outline that follows the same path as the magnifier
+     mask. Purely decorative; aria-hidden in markup. */
+  .magnifier-lens {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    pointer-events: none;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: radial-gradient(
+      circle,
+      rgba(96, 165, 250, 0.06) 0%,
+      rgba(96, 165, 250, 0.02) 60%,
+      transparent 80%
+    );
+    box-shadow: 0 0 60px rgba(96, 165, 250, 0.12) inset;
+    /* Position via percentage of parent. Animate left/top synced with mask. */
+    left: calc(var(--mx) - 160px);
+    top: calc(var(--my) - 160px);
+    animation: magnifier-roam 8s ease-in-out infinite;
+  }
+
+  /* Generic fade + rise for non-title hero elements (subtitle, CTAs, stats) */
+  .hero-rise {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: hero-rise-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes hero-rise-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* One-shot spotlight wash — a soft light sweeps across once on load */
+  .hero-spotlight {
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 30%,
+      rgba(96, 165, 250, 0.5) 0%,
+      rgba(96, 165, 250, 0.15) 35%,
+      transparent 65%
+    );
+    opacity: 0;
+    transform: scale(0.85);
+    animation: hero-spotlight 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) 150ms forwards;
+  }
+  @keyframes hero-spotlight {
+    0%   { opacity: 0; transform: scale(0.85); }
+    35%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.18); }
+  }
+
+  /* Background layers fade in softly (longer than the title) */
+  .hero-bg-in {
+    opacity: 0;
+    animation: hero-bg-in 1.4s ease-out forwards;
+  }
+  @keyframes hero-bg-in {
+    to { opacity: var(--hero-bg-target, 1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-rise, .hero-spotlight, .hero-bg-in,
+    .magnifier-bright, .magnifier-lens {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+    .magnifier-bright {
+      /* Leave the gradient visible across the whole heading */
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
 }

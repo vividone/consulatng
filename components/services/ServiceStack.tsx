@@ -17,20 +17,37 @@ const SERVICE_IMAGES: Partial<Record<ServiceSlug, string>> = {
 
 type Props = {
   /**
-   * The `top` offset (in rem) at which each card sticks. Larger when a
-   * sticky section heading sits above (homepage uses 20). Smaller when only
-   * the navbar is above (services overview page uses 6).
+   * The `top` offset (in rem) at which each card sticks. Only used when
+   * `sticky` is true.
    */
   topOffsetRem?: number;
+  /**
+   * When `true` (default), each card lives in its own min-h-screen row on
+   * lg+ and sticks at the same top offset — newer cards "replace" older
+   * ones as the user scrolls.
+   *
+   * When `false`, the cards simply stack vertically and scroll naturally.
+   */
+  sticky?: boolean;
 };
 
 /**
- * Replace-stack of service cards. Each card lives in its own min-h-screen
- * row on lg+ and sticks at the SAME top offset for every service, so when
- * the user scrolls into the next row the new card slides into the same
- * position and visually replaces the previous one.
+ * Service cards. Two presentation modes:
+ *   - `sticky` (default): replace-stack — each card sticks at the same top
+ *     offset, the next card lifts up to cover the previous one.
+ *   - flow (`sticky={false}`): plain vertical stack that scrolls normally.
  */
-export function ServiceStack({ topOffsetRem = 6 }: Props) {
+export function ServiceStack({ topOffsetRem = 6, sticky = true }: Props) {
+  if (!sticky) {
+    return (
+      <div className="container-prose space-y-6 sm:space-y-8">
+        {SERVICES.map((service) => (
+          <ServiceStackCard key={service.slug} service={service} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="container-prose">
       {SERVICES.map((service) => (
