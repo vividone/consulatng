@@ -1,19 +1,20 @@
 export const SITE = {
   name: "Consulat",
   legalName: "Consulat Ltd.",
+  tagline: "Immigration Simplified",
   domain: "consulatng.net",
   url: "https://consulatng.net",
   description:
     "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and CERPAC services.",
   email: "info@consulatng.net",
-  phone: "+234 802 644 2090",
+  phone: "+234 8141657981",
   altphone: "02013438504",
-  phoneHref: "tel:+2348026442090",
-  whatsapp: "+234 802 644 2090",
+  phoneHref: "tel:+2348141657981",
+  whatsapp: "+234 814657981",
   whatsappHref:
-    "https://wa.me/2348026442090?text=Hello%20Consulat%2C%20I%20would%20like%20to%20enquire%20about%20your%20immigration%20services.",
+    "https://wa.me/2348141657981?text=Hello%20Consulat%2C%20I%20would%20like%20to%20enquire%20about%20your%20immigration%20services.",
   address: {
-    streetAddress: "H1 Garwood Court, Sule Olusesi Road, Off National Conservation Road, Chevron",
+    streetAddress: "H1 Garwood Court, Sule Olusesi Road, Off Lekki Conservation Center Road, Chevron",
     addressLocality: "Lekki",
     addressRegion: "Lagos",
     addressCountry: "NG",

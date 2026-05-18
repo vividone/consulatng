@@ -17,7 +17,7 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Services"
+        eyebrow="Immigration Simplified"
         title="Our Services"
         subtitle="Comprehensive immigration and consular services for businesses and professionals operating in Nigeria."
       />

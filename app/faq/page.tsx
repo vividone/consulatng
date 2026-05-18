@@ -35,7 +35,7 @@ export default function FAQPage() {
     <>
       <JsonLd data={faqSchema} />
       <PageHero
-        eyebrow="FAQ"
+        eyebrow="Immigration Simplified"
         title="Frequently Asked Questions"
         subtitle="Answers to the most common questions about immigration, work permits, and residency in Nigeria."
       />

@@ -49,6 +49,7 @@ const organizationSchema = {
   "@id": `${SITE.url}/#organization`,
   name: SITE.legalName,
   alternateName: SITE.name,
+  slogan: SITE.tagline,
   url: SITE.url,
   email: SITE.email,
   telephone: SITE.phone,

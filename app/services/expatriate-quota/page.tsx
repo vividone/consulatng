@@ -76,7 +76,7 @@ export default function ExpatriateQuotaPage() {
     <>
       <JsonLd data={serviceSchema} />
       <PageHero
-        eyebrow="Services"
+        eyebrow="Immigration Simplified"
         title="Expatriate Quota Services"
         subtitle="Secure and manage the quota positions your organisation needs to employ foreign nationals in Nigeria — from initial allocation through to ongoing compliance."
       />

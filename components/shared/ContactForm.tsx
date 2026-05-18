@@ -21,6 +21,7 @@ const schema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
   companyName: z.string().min(1, "Company name is required"),
   email: z.string().email("Please enter a valid email"),
+  phoneCountry: z.string().default("NG"),
   phone: z.string().optional(),
   service: z.string().min(1, "Please select a service"),
   expatriates: z.string().min(1, "Please select a range"),
@@ -40,6 +41,48 @@ const SERVICES = [
 
 const RANGES = ["1–5", "6–20", "21–50", "50+"];
 
+/**
+ * International dialling-code options for the phone field.
+ * Nigeria sits at the top (default); the rest follow a roughly
+ * alphabetical order. Covers the realistic client audience —
+ * Africa, Europe, North America, Asia-Pacific, Middle East.
+ */
+const DIAL_CODES: { code: string; name: string; flag: string; dial: string }[] = [
+  { code: "NG", name: "Nigeria",        flag: "🇳🇬", dial: "+234" },
+  { code: "AR", name: "Argentina",      flag: "🇦🇷", dial: "+54" },
+  { code: "AU", name: "Australia",      flag: "🇦🇺", dial: "+61" },
+  { code: "BE", name: "Belgium",        flag: "🇧🇪", dial: "+32" },
+  { code: "BR", name: "Brazil",         flag: "🇧🇷", dial: "+55" },
+  { code: "CA", name: "Canada",         flag: "🇨🇦", dial: "+1" },
+  { code: "CN", name: "China",          flag: "🇨🇳", dial: "+86" },
+  { code: "EG", name: "Egypt",          flag: "🇪🇬", dial: "+20" },
+  { code: "FR", name: "France",         flag: "🇫🇷", dial: "+33" },
+  { code: "DE", name: "Germany",        flag: "🇩🇪", dial: "+49" },
+  { code: "GH", name: "Ghana",          flag: "🇬🇭", dial: "+233" },
+  { code: "IN", name: "India",          flag: "🇮🇳", dial: "+91" },
+  { code: "IE", name: "Ireland",        flag: "🇮🇪", dial: "+353" },
+  { code: "IT", name: "Italy",          flag: "🇮🇹", dial: "+39" },
+  { code: "JP", name: "Japan",          flag: "🇯🇵", dial: "+81" },
+  { code: "KE", name: "Kenya",          flag: "🇰🇪", dial: "+254" },
+  { code: "MX", name: "Mexico",         flag: "🇲🇽", dial: "+52" },
+  { code: "NL", name: "Netherlands",    flag: "🇳🇱", dial: "+31" },
+  { code: "PT", name: "Portugal",       flag: "🇵🇹", dial: "+351" },
+  { code: "QA", name: "Qatar",          flag: "🇶🇦", dial: "+974" },
+  { code: "SA", name: "Saudi Arabia",   flag: "🇸🇦", dial: "+966" },
+  { code: "SG", name: "Singapore",      flag: "🇸🇬", dial: "+65" },
+  { code: "ZA", name: "South Africa",   flag: "🇿🇦", dial: "+27" },
+  { code: "KR", name: "South Korea",    flag: "🇰🇷", dial: "+82" },
+  { code: "ES", name: "Spain",          flag: "🇪🇸", dial: "+34" },
+  { code: "SE", name: "Sweden",         flag: "🇸🇪", dial: "+46" },
+  { code: "CH", name: "Switzerland",    flag: "🇨🇭", dial: "+41" },
+  { code: "AE", name: "UAE",            flag: "🇦🇪", dial: "+971" },
+  { code: "GB", name: "United Kingdom", flag: "🇬🇧", dial: "+44" },
+  { code: "US", name: "United States",  flag: "🇺🇸", dial: "+1" },
+];
+
+const findDialCode = (countryCode: string) =>
+  DIAL_CODES.find((c) => c.code === countryCode)?.dial ?? "+234";
+
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
 
@@ -52,13 +95,17 @@ export function ContactForm() {
     reset,
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { service: "", expatriates: "" },
+    defaultValues: { service: "", expatriates: "", phoneCountry: "NG" },
   });
 
   const onSubmit = async (values: FormValues) => {
-    // In production: POST to /api/contact or external form service
+    // In production: POST to /api/contact or external form service.
+    // Combine the country dial code with the local number for a normalised
+    // E.164-ish phone string that downstream systems can consume directly.
+    const dial = findDialCode(values.phoneCountry);
+    const fullPhone = values.phone ? `${dial} ${values.phone.trim()}` : "";
     await new Promise((resolve) => setTimeout(resolve, 600));
-    console.log("Contact form submission:", values);
+    console.log("Contact form submission:", { ...values, fullPhone });
     setSubmitted(true);
     reset();
   };
@@ -118,7 +165,44 @@ export function ContactForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone">Phone Number</Label>
-          <Input id="phone" type="tel" placeholder="+234 ..." {...register("phone")} />
+          <div className="flex gap-2">
+            <Select
+              value={watch("phoneCountry")}
+              onValueChange={(v) =>
+                setValue("phoneCountry", v, { shouldValidate: false })
+              }
+            >
+              <SelectTrigger
+                aria-label="Country dialling code"
+                className="w-28 shrink-0 whitespace-nowrap sm:w-32"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="max-h-72 min-w-[9rem]">
+                {DIAL_CODES.map((c) => (
+                  <SelectItem
+                    key={c.code}
+                    value={c.code}
+                    className="whitespace-nowrap"
+                  >
+                    <span className="mr-2" aria-hidden>
+                      {c.flag}
+                    </span>
+                    <span className="font-medium">{c.dial}</span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              id="phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel-national"
+              placeholder="802 123 4567"
+              className="flex-1"
+              {...register("phone")}
+            />
+          </div>
         </div>
       </div>
 
@@ -145,7 +229,7 @@ export function ContactForm() {
           )}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="expatriates">Number of Expatriates *</Label>
+          <Label htmlFor="expatriates">Number of Persons in your delegation/crew *</Label>
           <Select
             value={watch("expatriates")}
             onValueChange={(v) => setValue("expatriates", v, { shouldValidate: true })}

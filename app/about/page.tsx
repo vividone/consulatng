@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHero } from "@/components/shared/PageHero";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Reveal } from "@/components/shared/Reveal";
@@ -39,10 +40,27 @@ const VALUES = [
   },
 ];
 
-const TEAM = [
+type TeamMember = {
+  name: string;
+  role: string;
+  image?: string;
+  bio: string | string[];
+};
+
+const TEAM: TeamMember[] = [
+  {
+    name: "Michael Odibeli",
+    role: "Non-Executive Director",
+    image: "/team/michael-odibeli.jpg",
+    bio: [
+      "Michael Odibeli is a seasoned legal and governance professional with over three decades of experience spanning corporate law, regulatory compliance, Board-level advisory, business planning & integration, and strategic implementation. A Barrister-at-Law with LLB and LLM qualifications, he brings a multidisciplinary background combining legal expertise, operational oversight, and strategic governance.",
+      "He is currently a Partner at CREED & Company, where he leads Corporate, Immigration and Compliance services. In his career, he served as General Manager (HR & Company Secretary) at SGS Nigeria Limited, where he oversaw corporate governance, regulatory compliance, and enterprise risk management. He has also served as a Non-Executive Director in various companies, reinforcing his expertise in governance structures, stakeholder accountability, and corporate oversight.",
+      "His involvement in hundreds of expatriate and local personnel mobilisations and crew changes for Oil & Gas, Engineering and Maritime Service companies is worthy of note. Michael brings his wealth of experience to serve as Non-Executive Director at Consulat Ltd.",
+    ],
+  },
   {
     name: "[Name]",
-    role: "Founder & Principal Consultant",
+    role: "Consultant",
     bio: "Bio coming soon — background, qualifications, years of experience, and areas of expertise.",
   },
   {
@@ -51,9 +69,9 @@ const TEAM = [
     bio: "Bio coming soon.",
   },
   {
-    name: "[Name]",
-    role: "Client Relations Manager",
-    bio: "Bio coming soon.",
+    name: "Faith Bassey",
+    role: "Business Officer",
+    bio: "Faith Bassey is a Business Officer at Consulat Ltd. With a strong background in business development and client relations, she plays a key role in managing client accounts, developing new business opportunities, and ensuring smooth project execution. Her expertise in stakeholder engagement and strategic planning makes her an invaluable asset to the Consulat team.",
   },
 ];
 
@@ -63,7 +81,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="About Us"
+        eyebrow="Immigration Simplified"
         title="About Consulat"
         subtitle="Nigeria's Specialist Immigration Consulting Firm — Trusted by Multinationals, NGOs, and Growing Businesses Worldwide."
       />
@@ -139,24 +157,47 @@ export default function AboutPage() {
             <SectionHeading
               eyebrow="Our Team"
               title="The people behind Consulat"
-              intro="Headshots and full biographies will be added once provided by the client."
+              intro="Meet the leadership team driving Consulat&rsquo;s standards of service."
             />
           </Reveal>
-          <div className="grid gap-6 md:grid-cols-3">
-            {TEAM.map((member, i) => (
-              <Reveal key={member.role} delay={i * 120}>
-                <div className="rounded-2xl border border-grey-200 bg-white p-7">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 font-display text-2xl font-bold text-primary">
-                    {member.name.charAt(1) || "?"}
+          <div className="mx-auto grid max-w-5xl items-start gap-6 sm:grid-cols-2">
+            {TEAM.map((member, i) => {
+              const bioParas = Array.isArray(member.bio) ? member.bio : [member.bio];
+              return (
+                <Reveal key={member.role} delay={i * 120}>
+                  <div className="overflow-hidden rounded-2xl border border-grey-200 bg-white">
+                    {member.image ? (
+                      <div className="relative aspect-[4/5] w-full bg-grey-100">
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover object-top"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 font-display text-2xl font-bold text-primary">
+                          {member.name.replace(/[^A-Za-z]/g, "").charAt(0) || "?"}
+                        </div>
+                      </div>
+                    )}
+                    <div className="p-7">
+                      <h3 className="font-display text-lg font-bold text-grey-900">
+                        {member.name}
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-accent">{member.role}</p>
+                      <div className="mt-4 space-y-3 text-sm leading-relaxed text-grey-700">
+                        {bioParas.map((para, idx) => (
+                          <p key={idx}>{para}</p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="mt-5 font-display text-lg font-bold text-grey-900">
-                    {member.name}
-                  </h3>
-                  <p className="mt-1 text-sm font-medium text-accent">{member.role}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-grey-700">{member.bio}</p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

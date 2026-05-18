@@ -19,7 +19,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
+        eyebrow="Immigration Simplified"
         title="Get in Touch"
         subtitle="Whether you have a specific immigration need or want to discuss ongoing support, our team is ready to help."
       />

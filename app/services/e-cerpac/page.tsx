@@ -61,7 +61,7 @@ export default function ECerpacPage() {
     <>
       <JsonLd data={serviceSchema} />
       <PageHero
-        eyebrow="Services"
+        eyebrow="Immigration Simplified"
         title="e-CERPAC Services"
         subtitle="Secure and manage Combined Expatriate Residence Permits and Aliens Cards for your foreign employees — from first-time applications to renewals, regularisation, and entry/exit compliance."
       />
