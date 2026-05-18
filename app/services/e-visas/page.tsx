@@ -95,7 +95,7 @@ export default function EVisasPage() {
     <>
       <JsonLd data={serviceSchema} />
       <PageHero
-        eyebrow="Services"
+        eyebrow="Immigration Simplified"
         title="e-Visa Services"
         subtitle="Facilitate smooth entry into Nigeria with the right visa category — whether for business, employment, tourism, or short-term assignments."
       />

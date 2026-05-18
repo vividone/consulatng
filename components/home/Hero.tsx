@@ -2,17 +2,21 @@ import Link from "next/link";
 import { ArrowRight, FileCheck2, IdCard, Plane, Stamp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FlagMarquee } from "./FlagMarquee";
+import { CountUpStat } from "./CountUpStat";
 import { WorldMap } from "@/components/shared/WorldMap";
+import { SITE } from "@/lib/constants";
 
 const HERO_TITLE =
   "Your trusted partner for immigration & work permits in Nigeria";
 
 /**
  * Hero entrance timing. All animations are CSS-driven.
+ *  - The tagline eyebrow rises first.
  *  - The H1 uses the magnifier effect (continuous, auto-roam) — no entrance,
  *    just settles into place once visible.
  *  - Subtitle, CTAs and stats fade-up sequentially.
  */
+const EYEBROW_DELAY_MS = 150;
 const SUBTITLE_DELAY_MS = 350;
 const CTAS_DELAY_MS = 550;
 const STATS_BASE_DELAY_MS = 800;
@@ -82,6 +86,12 @@ export function Hero() {
       {/* Hero copy — centered */}
       <div className="container-prose relative py-16 sm:py-24 lg:py-32 xl:py-40">
         <div className="mx-auto max-w-4xl text-center">
+          <p
+            className="hero-rise mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-accent sm:mb-5 sm:text-sm"
+            style={{ animationDelay: `${EYEBROW_DELAY_MS}ms` }}
+          >
+            {SITE.tagline}
+          </p>
           {/* Magnifier H1: dim base text + bright gradient text revealed only
               inside a circular mask that roams across the heading. */}
           <h1 className="font-display text-[1.75rem] font-extrabold leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -106,8 +116,8 @@ export function Hero() {
             }}
           >
             Helping multinationals, investors, and professionals navigate
-            Nigeria&apos;s immigration system — from business permits to visa
-            procurement.
+            Nigeria&apos;s immigration ecosystem — from business permits to
+            visa procurement.
           </p>
 
           <div
@@ -125,9 +135,10 @@ export function Hero() {
           </div>
 
           <dl className="mx-auto mt-12 grid max-w-xl grid-cols-3 gap-3 border-t border-white/10 pt-6 sm:mt-14 sm:gap-6 sm:pt-8">
-            <Stat value="500+" label="Permits filed"   delayMs={STATS_BASE_DELAY_MS} />
-            <Stat value="30+"  label="Countries served" delayMs={STATS_BASE_DELAY_MS + 120} />
-            <Stat value="24h"  label="Response time"   delayMs={STATS_BASE_DELAY_MS + 240} />
+            {/* TODO(client): confirm exact counter targets. Placeholders below. */}
+            <CountUpStat target={500}   suffix="+" label="Permits issued"    delayMs={STATS_BASE_DELAY_MS} />
+            <CountUpStat target={1200}  suffix="+" label="Visas processed"   delayMs={STATS_BASE_DELAY_MS + 120} />
+            <CountUpStat target={30}    suffix="+" label="Countries served"  delayMs={STATS_BASE_DELAY_MS + 240} />
           </dl>
         </div>
       </div>
@@ -137,27 +148,6 @@ export function Hero() {
         <FlagMarquee />
       </div>
     </section>
-  );
-}
-
-function Stat({
-  value,
-  label,
-  delayMs,
-}: {
-  value: string;
-  label: string;
-  delayMs: number;
-}) {
-  return (
-    <div className="hero-rise" style={{ animationDelay: `${delayMs}ms` }}>
-      <dt className="font-display text-xl font-bold text-white sm:text-2xl md:text-3xl">
-        {value}
-      </dt>
-      <dd className="mt-1 text-[10px] uppercase tracking-wider text-white/60 sm:text-xs">
-        {label}
-      </dd>
-    </div>
   );
 }
 

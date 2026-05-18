@@ -21,7 +21,7 @@ export default function BlogIndexPage() {
   return (
     <>
       <PageHero
-        eyebrow="Blog"
+        eyebrow="Immigration Simplified"
         title="Immigration Insights & Resources"
         subtitle="Stay informed with the latest updates, regulatory changes, and practical guides on immigration and work permits in Nigeria."
       />

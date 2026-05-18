@@ -69,7 +69,7 @@ export default function BusinessPermitPage() {
     <>
       <JsonLd data={serviceSchema} />
       <PageHero
-        eyebrow="Services"
+        eyebrow="Immigration Simplified"
         title="Business Permit Services"
         subtitle="Obtain the legal authorisation your company needs to operate in Nigeria as a foreign-owned or foreign-affiliated business."
       />
