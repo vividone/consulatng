@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { PageHero } from "@/components/shared/PageHero";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Reveal } from "@/components/shared/Reveal";
 import { BridgeSlider } from "@/components/shared/BridgeSlider";
 import { CTABanner } from "@/components/home/CTABanner";
+import { TeamGrid, type TeamMember } from "@/components/shared/TeamGrid";
 import { buildMetadata } from "@/lib/metadata";
 import { getBridgeImages } from "@/lib/bridges";
 import { ShieldCheck, Sparkles, Clock, Handshake } from "lucide-react";
@@ -40,13 +40,6 @@ const VALUES = [
   },
 ];
 
-type TeamMember = {
-  name: string;
-  role: string;
-  image?: string;
-  bio: string | string[];
-};
-
 const TEAM: TeamMember[] = [
   {
     name: "Michael Odibeli",
@@ -59,19 +52,28 @@ const TEAM: TeamMember[] = [
     ],
   },
   {
-    name: "[Name]",
-    role: "Consultant",
-    bio: "Bio coming soon — background, qualifications, years of experience, and areas of expertise.",
+    name: "Lynn Odibeli",
+    role: "Director, Business Development",
+    image: "/team/lynn-odibeli.jpg",
+    bio: "With over 20 years of experience in banking, credit management, and business development, Lynn specialises in market expansion and commercial partnerships. She has a proven track record in credit risk management, strategic negotiation, and driving revenue growth in competitive markets during a banking career as Assistant Bank Manager and Branch Head. Lynn holds a B.Sc. in Applied Biology and a Certification in Entrepreneurial Management from Lagos Business School's Enterprise arm. As Director, Business Development, she is recognised for her strategic oversight, disciplined decision-making, and board-level contributions to sustainable growth.",
   },
   {
-    name: "[Name]",
-    role: "Operations Manager",
-    bio: "Bio coming soon.",
+    name: "Fezi Eniekebi",
+    role: "Logistics & Government Relations",
+    image: "/team/fezi-eniekebi.jpg",
+    bio: "Fezi is a results-driven Logistics and Government Relations Specialist with a proven track record of streamlining supply chain operations while fostering productive relationships with government agencies and regulatory bodies. A skilled navigator of complex compliance matters, he coordinates cross-border logistics on very challenging timelines and has built relationships with strategic stakeholders to ensure smooth business operations and regulatory alignment. He graduated with honours from the Rivers State University of Technology, Port Harcourt, and anchors the entire South-East business activities.",
+  },
+  {
+    name: "Emmanuella Edoho",
+    role: "Operations Officer",
+    image: "/team/emmanuella-edoho.jpg",
+    bio: "Emmanuella Edoho is an operations and administrative professional with experience supporting organisational efficiency, executive coordination, and customer relationship management. She has worked across business operations, education administration, and executive support roles, where she has developed strong skills in process management, stakeholder communication, and workflow optimisation. Emmanuella is passionate about delivering organised, client-focused solutions that improve productivity and service delivery.",
   },
   {
     name: "Faith Bassey",
     role: "Business Officer",
-    bio: "Faith Bassey is a Business Officer at Consulat Ltd. With a strong background in business development and client relations, she plays a key role in managing client accounts, developing new business opportunities, and ensuring smooth project execution. Her expertise in stakeholder engagement and strategic planning makes her an invaluable asset to the Consulat team.",
+    image: "/team/faith-bassey.jpg",
+    bio: "Faith brings experience in customer relationship management and virtual assistance, with a strong focus on client communication, documentation, and administrative support. She has developed a solid background in managing client interactions, maintaining accurate records, and supporting efficient business operations. She continues to build her expertise in business support and service coordination, and is committed to delivering organised, reliable, and detail-oriented support across all assigned responsibilities.",
   },
 ];
 
@@ -157,48 +159,10 @@ export default function AboutPage() {
             <SectionHeading
               eyebrow="Our Team"
               title="The people behind Consulat"
-              intro="Meet the leadership team driving Consulat&rsquo;s standards of service."
+              intro="Meet the people delivering Consulat&rsquo;s standards of service. Click any team member to read their full bio."
             />
           </Reveal>
-          <div className="mx-auto grid max-w-5xl items-start gap-6 sm:grid-cols-2">
-            {TEAM.map((member, i) => {
-              const bioParas = Array.isArray(member.bio) ? member.bio : [member.bio];
-              return (
-                <Reveal key={member.role} delay={i * 120}>
-                  <div className="overflow-hidden rounded-2xl border border-grey-200 bg-white">
-                    {member.image ? (
-                      <div className="relative aspect-[4/5] w-full bg-grey-100">
-                        <Image
-                          src={member.image}
-                          alt={member.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover object-top"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 font-display text-2xl font-bold text-primary">
-                          {member.name.replace(/[^A-Za-z]/g, "").charAt(0) || "?"}
-                        </div>
-                      </div>
-                    )}
-                    <div className="p-7">
-                      <h3 className="font-display text-lg font-bold text-grey-900">
-                        {member.name}
-                      </h3>
-                      <p className="mt-1 text-sm font-medium text-accent">{member.role}</p>
-                      <div className="mt-4 space-y-3 text-sm leading-relaxed text-grey-700">
-                        {bioParas.map((para, idx) => (
-                          <p key={idx}>{para}</p>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
+          <TeamGrid members={TEAM} />
         </div>
       </section>
 
