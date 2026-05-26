@@ -21,7 +21,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Immigration Simplified"
         title="Get in Touch"
-        subtitle="Whether you have a specific immigration need or want to discuss ongoing support, our team is ready to help."
+        subtitle="Whether you have a specific immigration need or want to discuss ongoing support for an ongoing or future project, our team is ready to help."
       />
 
       <section className="bg-white py-14 sm:py-20">

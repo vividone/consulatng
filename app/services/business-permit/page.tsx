@@ -71,7 +71,7 @@ export default function BusinessPermitPage() {
       <PageHero
         eyebrow="Immigration Simplified"
         title="Business Permit Services"
-        subtitle="Obtain the legal authorisation your company needs to operate in Nigeria as a foreign-owned or foreign-affiliated business."
+        subtitle="You can own a Nigerian Business 100% and create a pathway towards Nigerian (Temporary or Permanent) Residency for your staff."
       />
       <ServiceBanner src="/services/business-permit.jpg" alt="Business Permit Services" />
 
@@ -125,7 +125,7 @@ export default function BusinessPermitPage() {
 
       <ServiceNav currentSlug="business-permit" />
       <ServiceCTA
-        heading="Need to apply for or renew a Business Permit?"
+        heading="Need to apply for, renew or authenticate a Business Permit?"
         body="Our team handles the full process so you can focus on running your business."
       />
     </>
