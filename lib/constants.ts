@@ -38,6 +38,7 @@ export const NAV_LINKS = [
       { href: "/services/expatriate-quota", label: "Expatriate Quota" },
       { href: "/services/e-cerpac",         label: "e-CERPAC" },
       { href: "/services/e-visas",          label: "e-Visas" },
+      { href: "/services/training",         label: "Training" },
     ],
   },
   { href: "/blog", label: "Blog" },
@@ -51,7 +52,7 @@ export const SERVICES = [
     title: "Business Permit",
     shortTitle: "Business Permit",
     summary:
-      "Obtain the legal authorisation your company needs to operate in Nigeria. We manage the full application process with the Federal Ministry of Interior from documentation through to approval.",
+      "Obtain the legal authorisation your company needs to operate in Nigeria as a foreign-owned or foreign-affiliated business.",
     covers: [
       "Eligibility Assessment",
       "Documentation Preparation",
@@ -65,13 +66,13 @@ export const SERVICES = [
     title: "Expatriate Quota",
     shortTitle: "Expatriate Quota",
     summary:
-      "Secure and manage the quota positions your organisation needs to employ foreign nationals in Nigeria — including establishment, additional slots, renewals, monthly returns, and NIS portal management.",
+      "Secure and manage approvals for your organisation to employ foreign nationals in Nigeria. Your selected persons will be employed in Nigeria and will be able to apply for Work and Residence Permits.",
     covers: [
       "Establishment Quota",
       "Additional Quota",
       "Renewal",
       "Monthly Returns",
-      "Deletions",
+      "Deletion Returns",
       "Immigration Visits",
       "Portal Management",
     ],
@@ -81,7 +82,7 @@ export const SERVICES = [
     title: "e-CERPAC (Residence Permits)",
     shortTitle: "e-CERPAC",
     summary:
-      "Obtain and manage Combined Expatriate Residence Permits and Aliens Cards for your workforce, including new applications, renewals, regularisation, and migration processes.",
+      "Obtain and manage Combined Expatriate Residence Permits and Aliens Cards for your workforce, including new applications, renewals, regularisation, and migration. Your workforce will have the full benefits and privileges of being Nigerian residents.",
     covers: [
       "Migration / Transitioning",
       "Regularisation",
@@ -102,6 +103,20 @@ export const SERVICES = [
       "Tourist Visa",
       "Visa on Arrival (Business)",
       "Visa on Arrival (TWP)",
+    ],
+  },
+  {
+    slug: "training",
+    title: "Training",
+    shortTitle: "Training",
+    summary:
+      "Building skills you can actually use. Practical, tailored training sessions designed around your team's real challenges — no fluff, no one-size-fits-all lectures, just skills your people can apply the next day.",
+    covers: [
+      "Leadership Development",
+      "Communication Skills",
+      "Project Management",
+      "Digital Skills",
+      "Bespoke Programmes",
     ],
   },
 ] as const;

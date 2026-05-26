@@ -46,9 +46,9 @@ const TEAM: TeamMember[] = [
     role: "Non-Executive Director",
     image: "/team/michael-odibeli.jpg",
     bio: [
-      "Michael Odibeli is a seasoned legal and governance professional with over three decades of experience spanning corporate law, regulatory compliance, Board-level advisory, business planning & integration, and strategic implementation. A Barrister-at-Law with LLB and LLM qualifications, he brings a multidisciplinary background combining legal expertise, operational oversight, and strategic governance.",
-      "He is currently a Partner at CREED & Company, where he leads Corporate, Immigration and Compliance services. In his career, he served as General Manager (HR & Company Secretary) at SGS Nigeria Limited, where he oversaw corporate governance, regulatory compliance, and enterprise risk management. He has also served as a Non-Executive Director in various companies, reinforcing his expertise in governance structures, stakeholder accountability, and corporate oversight.",
-      "His involvement in hundreds of expatriate and local personnel mobilisations and crew changes for Oil & Gas, Engineering and Maritime Service companies is worthy of note. Michael brings his wealth of experience to serve as Non-Executive Director at Consulat Ltd.",
+      "Michael Odibeli is a seasoned legal and governance professional with over three decades of experience spanning corporate law, regulatory compliance, Board-level advisory, business planning, integration and strategic implementation.",
+      "A Barrister-at-Law with LLB and LLM qualifications, he brings a multidisciplinary background combining legal expertise, operational oversight, and strategic governance. He is currently a Partner at CREED & Company, where he leads Corporate, Immigration and Compliance services. His involvement in hundreds of expatriate and local personnel mobilisations and crew changes for Oil & Gas, Engineering and Maritime Service companies is worthy of note: NLNG Train II, Mobil TMSA, Total Energies OFON, AKPO and EGINA projects offshore, LADOL, Bonny Island and Onne locations to name a few.",
+      "Michael brings his wealth of experience to serve as Non-Executive Director at Consulat Ltd.",
     ],
   },
   {
@@ -159,14 +159,14 @@ export default function AboutPage() {
             <SectionHeading
               eyebrow="Our Team"
               title="The people behind Consulat"
-              intro="Meet the people delivering Consulat&rsquo;s standards of service. Click any team member to read their full bio."
+              intro="Meet the people delivering Consulat&rsquo;s standards of service."
             />
           </Reveal>
           <TeamGrid members={TEAM} />
         </div>
       </section>
 
-      <section className="bg-grey-50 py-14 sm:py-20">
+      {/* <section className="bg-grey-50 py-14 sm:py-20">
         <div className="container-prose text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
             Accreditations & Memberships
@@ -185,7 +185,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <CTABanner heading="Let's discuss how we can support your team in Nigeria" />
     </>

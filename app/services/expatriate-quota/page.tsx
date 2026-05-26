@@ -36,17 +36,17 @@ const ITEMS = [
   {
     title: "Renewal",
     description:
-      "Expatriate Quota positions must be renewed periodically. We track expiry dates, prepare renewal applications, and file them well in advance to prevent any disruption to your workforce or compliance status.",
+      "Expatriate Quota positions must be renewed periodically. We track expiry dates, prepare renewal applications, compile the necessary documentation, and file them well in advance to prevent any disruption to your workforce or compliance status.",
   },
   {
     title: "Monthly Returns",
     description:
-      "Every company holding an Expatriate Quota is required to file Monthly Returns with the Nigeria Immigration Service. These returns report the status, details, and movements of all expatriate employees. Consulat prepares and submits these filings on your behalf every month, ensuring timely compliance and accurate reporting.",
+      "Every company holding an Expatriate Quota is required to file Monthly Returns with the Nigeria Immigration Service. These returns report the status, details, movement and location of all expatriate employees, their qualifications, demographics, and Nigerian understudies. Consulat prepares and submits these filings on your behalf every month, ensuring timely compliance and accurate reporting.",
   },
   {
-    title: "Deletions",
+    title: "Deletion Returns",
     description:
-      "When an expatriate leaves the company or a quota position is no longer needed, the slot must be formally deleted from the company's allocation. We handle the deletion process and all associated documentation with the Ministry.",
+      "In the event of an expatriate being disengaged or demobilised upon completion of their task or project, the company owes a reporting obligation to the Comptroller General, Nigeria Immigration Service. The NIS will only absolve the company of immigration responsibility and delete the departed expatriate from the company's Expatriate Quota Card after proof of exit — by physical surrender of the CERPAC card and/or the airline boarding pass of the departed expatriate.",
   },
   {
     title: "Immigration Visits & Queries",
@@ -78,7 +78,7 @@ export default function ExpatriateQuotaPage() {
       <PageHero
         eyebrow="Immigration Simplified"
         title="Expatriate Quota Services"
-        subtitle="Secure and manage the quota positions your organisation needs to employ foreign nationals in Nigeria — from initial allocation through to ongoing compliance."
+        subtitle="Secure and manage approvals for your organisation to employ foreign nationals in Nigeria. Your selected persons will be employed in Nigeria and will be able to apply for Work and Residence Permits."
       />
       <ServiceBanner src="/services/expatriate-quota.jpg" alt="Expatriate Quota Services" />
 
