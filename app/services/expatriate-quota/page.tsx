@@ -46,7 +46,7 @@ const ITEMS = [
   {
     title: "Deletion Returns",
     description:
-      "In the event of an expatriate being disengaged or demobilised upon completion of their task or project, the company owes a reporting obligation to the Comptroller General, Nigeria Immigration Service. The NIS will only absolve the company of immigration responsibility and delete the departed expatriate from the company's Expatriate Quota Card after proof of exit — by physical surrender of the CERPAC card and/or the airline boarding pass of the departed expatriate.",
+      "In the event of an expatriate being disengaged or demobilised upon completion of their task or project, the company owes a reporting obligation to the Comptroller General, Nigeria Immigration Service. The NIS will only absolve the company of immigration responsibility and delete the departed expatriate from the company's Expatriate Quota Card after proof of exit — by physical surrender of the e-CERPAC card and/or the airline boarding pass of the departed expatriate.",
   },
   {
     title: "Immigration Visits & Queries",

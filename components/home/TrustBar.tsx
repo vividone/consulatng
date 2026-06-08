@@ -44,7 +44,7 @@ export function TrustBar() {
                   alt={client.name}
                   width={client.width}
                   height={client.height}
-                  className="h-full w-auto object-contain opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                  className="h-full w-auto object-contain opacity-60 transition duration-300 hover:opacity-100"
                 />
               </li>
             ))}

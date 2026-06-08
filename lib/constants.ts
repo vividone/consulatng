@@ -5,7 +5,7 @@ export const SITE = {
   domain: "consulatng.net",
   url: "https://consulatng.net",
   description:
-    "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and CERPAC services.",
+    "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and e-CERPAC services.",
   email: "info@consulatng.net",
   phone: "+234 8141657981",
   altphone: "02013438504",
