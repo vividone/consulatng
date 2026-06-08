@@ -167,7 +167,7 @@ function FloatingChips() {
     },
     {
       icon: IdCard,
-      label: "CERPAC",
+      label: "e-CERPAC",
       className: "right-[8%] top-[14%]",
       floatClass: "hero-chip-float-2",
     },

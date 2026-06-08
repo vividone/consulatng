@@ -12,7 +12,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Articles, guides, and regulatory updates on immigration and work permits in Nigeria.",
   path: "/blog",
-  keywords: ["Nigeria immigration blog", "immigration news Nigeria", "CERPAC guide", "expatriate quota Nigeria"],
+  keywords: ["Nigeria immigration blog", "immigration news Nigeria", "e-CERPAC guide", "expatriate quota Nigeria"],
 });
 
 export default function BlogIndexPage() {

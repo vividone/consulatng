@@ -13,9 +13,9 @@ import { Check } from "lucide-react";
 export const metadata: Metadata = buildMetadata({
   title: "e-CERPAC Residence Permit Services — Consulat",
   description:
-    "CERPAC applications, renewals, regularisation, and migration services for expatriates in Nigeria.",
+    "e-CERPAC applications, renewals, regularisation, and migration services for expatriates in Nigeria.",
   path: "/services/e-cerpac",
-  keywords: ["CERPAC Nigeria", "residence permit Nigeria", "CERPAC renewal", "regularisation Nigeria"],
+  keywords: ["e-CERPAC Nigeria", "residence permit Nigeria", "e-CERPAC renewal", "regularisation Nigeria"],
 });
 
 const RESIDENCY_BENEFITS = [
@@ -31,22 +31,22 @@ const ITEMS = [
   {
     title: "Migration / Transitioning",
     description:
-      "When an expatriate's immigration status changes — for example, moving from a Temporary Work Permit to a full Subject to Regularisation (STR) visa, or transferring between employers — the CERPAC must be updated accordingly. We manage the full migration and transitioning process with the NIS.",
+      "When an expatriate's immigration status changes — for example, moving from a Temporary Work Permit to a full Subject to Regularisation (STR) visa, or transferring between employers — the e-CERPAC must be updated accordingly. We manage the full migration and transitioning process with the NIS.",
   },
   {
     title: "Regularisation Process",
     description:
-      "Expatriates who enter Nigeria on certain visa types are required to regularise their stay by obtaining a CERPAC within a specified period. Consulat ensures the regularisation is completed on time, preventing penalties, overstay issues, or disruptions to the employee's right to work.",
+      "Expatriates who enter Nigeria on certain visa types are required to regularise their stay by obtaining an e-CERPAC within a specified period. Consulat ensures the regularisation is completed on time, preventing penalties, overstay issues, or disruptions to the employee's right to work.",
   },
   {
     title: "Renewal Process — In-Country",
     description:
-      "For expatriates currently residing in Nigeria whose CERPAC is approaching expiry. We initiate the renewal well in advance, manage the biometric capture process, and track the card through to issuance.",
+      "For expatriates currently residing in Nigeria whose e-CERPAC is approaching expiry. We initiate the renewal well in advance, manage the biometric capture process, and track the card through to issuance.",
   },
   {
     title: "Renewal Process — Out-Country",
     description:
-      "For expatriates who are outside Nigeria at the time of renewal. We coordinate the process remotely and ensure the renewed CERPAC is ready upon their return.",
+      "For expatriates who are outside Nigeria at the time of renewal. We coordinate the process remotely and ensure the renewed e-CERPAC is ready upon their return.",
   },
   {
     title: "Landing Page (Entry and Exit)",
@@ -128,7 +128,7 @@ export default function ECerpacPage() {
 
       <ServiceNav currentSlug="e-cerpac" />
       <ServiceCTA
-        heading="Need to apply for, renew, or regularise a CERPAC?"
+        heading="Need to apply for, renew, or regularise an e-CERPAC?"
         body="We manage every step of the process so your employees remain compliant and focused on their work."
       />
     </>

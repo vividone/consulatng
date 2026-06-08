@@ -5,7 +5,7 @@ import { Reveal } from "@/components/shared/Reveal";
 const TESTIMONIALS = [
   {
     quote:
-      "Consulat handled our entire team's CERPAC and quota renewals seamlessly. Their proactive monitoring meant we never had a single expiry surprise.",
+      "Consulat handled our entire team's e-CERPAC and quota renewals seamlessly. Their proactive monitoring meant we never had a single expiry surprise.",
     name: "Ajit",
     role: "HR Director",
     country: "India",

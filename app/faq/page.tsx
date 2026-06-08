@@ -15,9 +15,9 @@ import { buildMetadata } from "@/lib/metadata";
 export const metadata: Metadata = buildMetadata({
   title: "FAQs — Immigration & Work Permits in Nigeria — Consulat",
   description:
-    "Answers to common questions about business permits, expatriate quotas, CERPAC, visas, and immigration compliance in Nigeria.",
+    "Answers to common questions about business permits, expatriate quotas, e-CERPAC, visas, and immigration compliance in Nigeria.",
   path: "/faq",
-  keywords: ["Nigeria immigration FAQ", "work permit questions", "CERPAC FAQ"],
+  keywords: ["Nigeria immigration FAQ", "work permit questions", "e-CERPAC FAQ"],
 });
 
 const faqSchema = {

@@ -12,13 +12,13 @@ import { buildMetadata } from "@/lib/metadata";
 export const metadata: Metadata = buildMetadata({
   title: "Consulat — Immigration & Work Permit Services in Nigeria",
   description:
-    "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and CERPAC services.",
+    "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and e-CERPAC services.",
   path: "/",
   keywords: [
     "immigration consulting Nigeria",
     "work permit Nigeria",
     "expatriate quota",
-    "CERPAC Nigeria",
+    "e-CERPAC Nigeria",
     "business permit Nigeria",
   ],
 });

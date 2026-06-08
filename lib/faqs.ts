@@ -8,8 +8,8 @@ export const FAQS = [
     a: "An Expatriate Quota is a government-approved allocation that permits a company to employ a specified number of foreign nationals in designated roles within Nigeria. Each quota position is tied to a specific job title and must be renewed periodically.",
   },
   {
-    q: "What is a CERPAC and who needs one?",
-    a: "The Combined Expatriate Residence Permit and Aliens Card (CERPAC) is a biometric residence permit required for all foreign nationals living and working in Nigeria. It must be obtained within a specified period after arrival and renewed before expiry.",
+    q: "What is an e-CERPAC and who needs one?",
+    a: "The Combined Expatriate Residence Permit and Aliens Card (CERPAC) is a mandatory biometric residence document for all foreign nationals living and working in Nigeria. Issued by the Nigeria Immigration Service, it serves as proof of lawful residence and must be obtained within the prescribed timeline of arrival, and presented on demand by an immigration officer. The Nigeria Immigration Service has introduced a QR-coded, machine-readable e-CERPAC designed to reduce airport processing time for non-Nigerian residents entering or leaving Nigeria.",
   },
   {
     q: "How long does it take to process a work permit or visa?",
@@ -21,11 +21,11 @@ export const FAQS = [
   },
   {
     q: "Can Consulat manage our entire immigration portfolio?",
-    a: "Yes. Many of our clients engage us on a retainer basis to manage their full immigration portfolio — including all permits, visas, CERPAC renewals, monthly filings, NIS portal management, and compliance monitoring.",
+    a: "Yes. Many of our clients engage us on a retainer basis to manage their full immigration portfolio — including all permits, visas, e-CERPAC renewals, monthly filings, NIS portal management, and compliance monitoring.",
   },
   {
-    q: "What happens if a CERPAC or visa expires?",
-    a: "Operating on an expired CERPAC or visa can result in penalties, fines, or restrictions on future applications. Consulat's monitoring systems track all expiry dates and initiate renewals well in advance to prevent any lapse in compliance.",
+    q: "What happens if an e-CERPAC or visa expires?",
+    a: "Operating on an expired e-CERPAC or visa can result in penalties, fines, or restrictions on future applications. Consulat's monitoring systems track all expiry dates and initiate renewals well in advance to prevent any lapse in compliance.",
   },
   {
     q: "Does Consulat work with companies outside Nigeria?",

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Learn about Consulat's team, mission, and expertise in Nigerian immigration services for international businesses.",
   path: "/about",
-  keywords: ["about consulat", "immigration consultants Lagos"],
+  keywords: ["about consulat", "immigration consultants Nigeria"],
 });
 
 const VALUES = [
@@ -90,7 +90,7 @@ export default function AboutPage() {
       <BridgeSlider
         images={bridgeImages}
         overlayHeading="Bridging the world to Nigeria"
-        overlayText="From every continent to Lagos — we connect global businesses and professionals to opportunity in Nigeria."
+        overlayText="From every continent to Nigeria — we connect global businesses and professionals to opportunity in Nigeria."
       />
 
       <section className="bg-white pb-16 pt-12 sm:pb-24 sm:pt-16">
@@ -111,7 +111,7 @@ export default function AboutPage() {
               Over the years, we have built a reputation for reliability, attention to detail, and deep institutional knowledge of the Nigerian immigration system. We work closely with the Nigeria Immigration Service and understand the regulatory landscape at every level — from federal directives to state-level implementation.
             </p>
             <p>
-              Our clients include Fortune 500 companies, international NGOs, fast-growing startups, and individual professionals across Europe, Asia, the Americas, and Africa. Regardless of size, every client receives the same standard of care: proactive communication, meticulous documentation, and full compliance assurance.
+              Our clients include blue chip companies, international NGOs, fast-growing startups, and individual professionals across Europe, Asia, the Americas, and Africa. Regardless of size, every client receives the same standard of care: proactive communication, meticulous documentation, and full compliance assurance.
             </p>
           </Reveal>
         </div>
