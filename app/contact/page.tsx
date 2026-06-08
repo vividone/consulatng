@@ -147,7 +147,7 @@ export default function ContactPage() {
               Find Our Office
             </h2>
             <p className="mt-2 text-grey-700">
-              Located in the heart of Lagos. Map placeholder — to be replaced with the confirmed office location.
+              Located in the heart of Lagos.
             </p>
           </div>
           <div className="aspect-[16/7] w-full overflow-hidden rounded-2xl border border-grey-200 shadow-sm">

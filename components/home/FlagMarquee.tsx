@@ -11,7 +11,7 @@ export function FlagMarquee() {
   return (
     <div
       aria-label="Countries we serve"
-      className="relative border-y border-white/10 bg-white/[0.04] py-5 backdrop-blur-sm"
+      className="relative border-y border-white/10 bg-white/[0.04] py-3 backdrop-blur-sm"
     >
       <div
         aria-hidden

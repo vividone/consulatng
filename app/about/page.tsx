@@ -42,38 +42,38 @@ const VALUES = [
 
 const TEAM: TeamMember[] = [
   {
-    name: "Michael Odibeli",
+    name: "Michael",
     role: "Non-Executive Director",
     image: "/team/michael-odibeli.jpg",
     bio: [
-      "Michael Odibeli is a seasoned legal and governance professional with over three decades of experience spanning corporate law, regulatory compliance, Board-level advisory, business planning, integration and strategic implementation.",
+      "Michael is a seasoned legal and governance professional with over three decades of experience spanning corporate law, regulatory compliance, Board-level advisory, business planning, integration and strategic implementation.",
       "A Barrister-at-Law with LLB and LLM qualifications, he brings a multidisciplinary background combining legal expertise, operational oversight, and strategic governance. He is currently a Partner at CREED & Company, where he leads Corporate, Immigration and Compliance services. His involvement in hundreds of expatriate and local personnel mobilisations and crew changes for Oil & Gas, Engineering and Maritime Service companies is worthy of note: NLNG Train II, Mobil TMSA, Total Energies OFON, AKPO and EGINA projects offshore, LADOL, Bonny Island and Onne locations to name a few.",
       "Michael brings his wealth of experience to serve as Non-Executive Director at Consulat Ltd.",
     ],
   },
   {
-    name: "Lynn Odibeli",
+    name: "Lynn",
     role: "Director, Business Development",
     image: "/team/lynn-odibeli.jpg",
-    bio: "With over 20 years of experience in banking, credit management, and business development, Lynn specialises in market expansion and commercial partnerships. She has a proven track record in credit risk management, strategic negotiation, and driving revenue growth in competitive markets during a banking career as Assistant Bank Manager and Branch Head. Lynn holds a B.Sc. in Applied Biology and a Certification in Entrepreneurial Management from Lagos Business School's Enterprise arm. As Director, Business Development, she is recognised for her strategic oversight, disciplined decision-making, and board-level contributions to sustainable growth.",
+    bio: ["With over 20 years of experience in banking, credit management, and business development, Lynn specialises in market expansion and commercial partnerships. She has a proven track record in credit risk management, strategic negotiation, and driving revenue growth in competitive markets during a banking career as Assistant Bank Manager and Branch Head.", "Lynn holds a B.Sc. in Applied Biology and a Certification in Entrepreneurial Management from Lagos Business School's Enterprise arm.", "As Director, Business Development, she is recognised for her strategic oversight, disciplined decision-making, and board-level contributions to sustainable growth."],
   },
   {
-    name: "Fezi Eniekebi",
+    name: "Fezi",
     role: "Logistics & Government Relations",
     image: "/team/fezi-eniekebi.jpg",
-    bio: "Fezi is a results-driven Logistics and Government Relations Specialist with a proven track record of streamlining supply chain operations while fostering productive relationships with government agencies and regulatory bodies. A skilled navigator of complex compliance matters, he coordinates cross-border logistics on very challenging timelines and has built relationships with strategic stakeholders to ensure smooth business operations and regulatory alignment. He graduated with honours from the Rivers State University of Technology, Port Harcourt, and anchors the entire South-East business activities.",
+    bio: ["Fezi is a results-driven Logistics and Government Relations Specialist with a proven track record of streamlining supply chain operations while fostering productive relationships with government agencies and regulatory bodies."," A skilled navigator of complex compliance matters, he coordinates cross-border logistics on very challenging timelines and has built relationships with strategic stakeholders to ensure smooth business operations and regulatory alignment.", "He graduated with honours from the Rivers State University of Technology, Port Harcourt, and anchors the entire South-East business activities.", ],
   },
   {
-    name: "Emmanuella Edoho",
+    name: "Emmanuella ",
     role: "Operations Officer",
     image: "/team/emmanuella-edoho.jpg",
-    bio: "Emmanuella Edoho is an operations and administrative professional with experience supporting organisational efficiency, executive coordination, and customer relationship management. She has worked across business operations, education administration, and executive support roles, where she has developed strong skills in process management, stakeholder communication, and workflow optimisation. Emmanuella is passionate about delivering organised, client-focused solutions that improve productivity and service delivery.",
+    bio: ["Emmanuella is an operations and administrative professional with experience supporting organisational efficiency, executive coordination, and customer relationship management. ","She has worked across business operations, education administration, and executive support roles, where she has developed strong skills in process management, stakeholder communication, and workflow optimisation."," Emmanuella is passionate about delivering organised, client-focused solutions that improve productivity and service delivery.",]
   },
   {
-    name: "Faith Bassey",
+    name: "Faith",
     role: "Business Officer",
     image: "/team/faith-bassey.jpg",
-    bio: "Faith brings experience in customer relationship management and virtual assistance, with a strong focus on client communication, documentation, and administrative support. She has developed a solid background in managing client interactions, maintaining accurate records, and supporting efficient business operations. She continues to build her expertise in business support and service coordination, and is committed to delivering organised, reliable, and detail-oriented support across all assigned responsibilities.",
+    bio: ["Faith brings experience in customer relationship management and virtual assistance, with a strong focus on client communication, documentation, and administrative support.", "She has developed a solid background in managing client interactions, maintaining accurate records, and supporting efficient business operations.", "She continues to build her expertise in business support and service coordination, and is committed to delivering organised, reliable, and detail-oriented support across all assigned responsibilities.",]
   },
 ];
 
