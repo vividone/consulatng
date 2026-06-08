@@ -142,7 +142,7 @@ export function ContactForm() {
           )}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="companyName">Company Name *</Label>
+          <Label htmlFor="companyName">Company Name</Label>
           <Input id="companyName" placeholder="Acme Inc." {...register("companyName")} />
           {errors.companyName && (
             <p className="text-sm text-red-600">{errors.companyName.message}</p>

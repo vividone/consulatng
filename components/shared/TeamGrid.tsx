@@ -60,7 +60,7 @@ export function TeamGrid({ members }: Props) {
             <button
               type="button"
               onClick={() => setOpenIndex(i)}
-              aria-label={`Read bio for ${m.name}, ${m.role}`}
+              aria-label={`Read Bio for ${m.name}, ${m.role}`}
               className="group block h-full w-full overflow-hidden rounded-xl border border-grey-200 bg-white text-left transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-grey-100">
@@ -86,7 +86,7 @@ export function TeamGrid({ members }: Props) {
                 </h3>
                 <p className="mt-0.5 text-xs font-medium text-accent sm:text-sm">{m.role}</p>
                 <p className="mt-2 text-xs font-semibold text-grey-500 transition-colors group-hover:text-primary">
-                  Read bio →
+                  Read Bio →
                 </p>
               </div>
             </button>

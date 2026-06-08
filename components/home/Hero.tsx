@@ -12,14 +12,25 @@ const HERO_TITLE =
 /**
  * Hero entrance timing. All animations are CSS-driven.
  *  - The tagline eyebrow rises first.
- *  - The H1 uses the magnifier effect (continuous, auto-roam) — no entrance,
- *    just settles into place once visible.
+ *  - The H1 reveals word-by-word with a stagger, then a continuous gradient
+ *    shimmer flows across the heading.
  *  - Subtitle, CTAs and stats fade-up sequentially.
  */
 const EYEBROW_DELAY_MS = 150;
+const TITLE_BASE_DELAY_MS = 280;
+const TITLE_STAGGER_MS = 80;
 const SUBTITLE_DELAY_MS = 350;
 const CTAS_DELAY_MS = 550;
 const STATS_BASE_DELAY_MS = 800;
+
+const HERO_TITLE_WORDS = HERO_TITLE.split(" ");
+/**
+ * Index AFTER which to force a line break. e.g. break after word index 3
+ * ("for") splits the title into:
+ *   "Your trusted partner for"
+ *   "immigration & work permits in Nigeria"
+ */
+const HERO_BREAK_AFTER = 3;
 
 export function Hero() {
   return (
@@ -55,55 +66,42 @@ export function Hero() {
       {/* Subtle drifting dot grid */}
       <div aria-hidden className="hero-grid pointer-events-none absolute inset-0 opacity-40" />
 
-      {/* Flowing topographic line accent */}
-      <svg
-        aria-hidden
-        viewBox="0 0 1440 600"
-        preserveAspectRatio="none"
-        className="hero-flow pointer-events-none absolute inset-x-0 bottom-0 h-1/2 w-full"
-      >
-        <defs>
-          <linearGradient id="flowGrad" x1="0" x2="1">
-            <stop offset="0%"  stopColor="#60A5FA" stopOpacity="0" />
-            <stop offset="50%" stopColor="#60A5FA" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#60A5FA" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {[0, 1, 2, 3].map((i) => (
-          <path
-            key={i}
-            d={`M -100 ${320 + i * 50} C 360 ${260 + i * 40}, 720 ${380 + i * 40}, 1080 ${300 + i * 40} S 1540 ${360 + i * 30}, 1640 ${320 + i * 40}`}
-            fill="none"
-            stroke="url(#flowGrad)"
-            strokeWidth="1"
-          />
-        ))}
-      </svg>
-
       {/* Floating decorative chips */}
-      <FloatingChips />
+      {/* <FloatingChips /> */}
 
       {/* Hero copy — centered */}
-      <div className="container-prose relative py-16 sm:py-24 lg:py-32 xl:py-40">
+      <div className="container-prose relative py-16 sm:py-18 lg:py-24 xl:py-35">
         <div className="mx-auto max-w-4xl text-center">
-          <p
+          {/* <p
             className="hero-rise mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-accent sm:mb-5 sm:text-sm"
             style={{ animationDelay: `${EYEBROW_DELAY_MS}ms` }}
           >
             {SITE.tagline}
-          </p>
-          {/* Magnifier H1: dim base text + bright gradient text revealed only
-              inside a circular mask that roams across the heading. */}
-          <h1 className="font-display text-[1.75rem] font-extrabold leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
-            <span className="magnifier-h1">
-              <span className="sr-only">{HERO_TITLE}</span>
-              <span aria-hidden className="magnifier-base">
-                {HERO_TITLE}
-              </span>
-              <span aria-hidden className="magnifier-bright">
-                {HERO_TITLE}
-              </span>
-              <span aria-hidden className="magnifier-lens hidden md:block" />
+          </p> */}
+          {/* Animated H1: each word fades + rises with a stagger, and a
+              continuous gradient shimmer flows across the heading. */}
+          <h1 className="hero-title font-display text-[1.65rem] font-extrabold leading-[1.25] tracking-tight pb-2 sm:pb-3 sm:text-5xl lg:text-6xl xl:text-7xl">
+            <span className="sr-only">{HERO_TITLE}</span>
+            <span aria-hidden className="hero-title-words">
+              {HERO_TITLE_WORDS.flatMap((word, i) => {
+                const isLast = i === HERO_TITLE_WORDS.length - 1;
+                const wordSpan = (
+                  <span
+                    key={`${word}-${i}`}
+                    className="hero-word"
+                    style={{
+                      animationDelay: `${TITLE_BASE_DELAY_MS + i * TITLE_STAGGER_MS}ms`,
+                    }}
+                  >
+                    {word}
+                    {!isLast ? " " : ""}
+                  </span>
+                );
+                if (i === HERO_BREAK_AFTER) {
+                  return [wordSpan, <br key={`br-${i}`} aria-hidden />];
+                }
+                return [wordSpan];
+              })}
             </span>
           </h1>
 
@@ -135,7 +133,6 @@ export function Hero() {
           </div>
 
           <dl className="mx-auto mt-12 grid max-w-xl grid-cols-3 gap-3 border-t border-white/10 pt-6 sm:mt-14 sm:gap-6 sm:pt-8">
-            {/* TODO(client): confirm exact counter targets. Placeholders below. */}
             <CountUpStat target={500}   suffix="+" label="Permits issued"    delayMs={STATS_BASE_DELAY_MS} />
             <CountUpStat target={1200}  suffix="+" label="Visas processed"   delayMs={STATS_BASE_DELAY_MS + 120} />
             <CountUpStat target={30}    suffix="+" label="Countries served"  delayMs={STATS_BASE_DELAY_MS + 240} />

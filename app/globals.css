@@ -168,41 +168,23 @@
   }
 
   /* =============================================================
-     HERO — magnifier headline + staged entrance
+     HERO — animated headline + staged entrance
      ============================================================= */
 
-  /*
-   * Animatable custom properties for the magnifier mask centre.
-   * @property declarations let CSS interpolate them inside the
-   * radial-gradient mask. Falls back gracefully where unsupported.
-   */
-  @property --mx {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 50%;
-  }
-  @property --my {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 50%;
-  }
-
-  /* Magnifier headline: dim text + bright gradient revealed inside a circular
-     mask that auto-roams across the heading. */
-  .magnifier-h1 {
-    position: relative;
-    display: inline-block;
+  /* Animated headline: each word renders the gradient itself (background-clip
+     on the parent does NOT paint through inline-block descendants, so we put
+     the gradient on each word). Words fade + rise on first reveal, and a
+     continuous shimmer pans the gradient back and forth across each word. */
+  .hero-title {
     text-wrap: balance;
   }
 
-  .magnifier-base {
-    color: rgba(255, 255, 255, 0.42);
+  .hero-title-words {
+    display: inline;
   }
 
-  .magnifier-bright {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
+  .hero-word {
+    display: inline-block;
     background: linear-gradient(
       100deg,
       #ffffff 0%,
@@ -216,53 +198,21 @@
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    -webkit-mask-image: radial-gradient(
-      circle 160px at var(--mx) var(--my),
-      black 35%,
-      transparent 70%
-    );
-    mask-image: radial-gradient(
-      circle 160px at var(--mx) var(--my),
-      black 35%,
-      transparent 70%
-    );
-    animation: magnifier-roam 8s ease-in-out infinite,
-      magnifier-shimmer 6s ease-in-out infinite;
+    opacity: 0;
+    transform: translateY(22px);
+    animation:
+      hero-word-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+      hero-title-shimmer 8s ease-in-out infinite;
+    /* Preserve the trailing word space inside the inline-block. */
+    white-space: pre;
   }
 
-  @keyframes magnifier-roam {
-    0%   { --mx: 14%; --my: 35%; }
-    20%  { --mx: 78%; --my: 55%; }
-    40%  { --mx: 32%; --my: 75%; }
-    60%  { --mx: 88%; --my: 28%; }
-    80%  { --mx: 50%; --my: 60%; }
-    100% { --mx: 14%; --my: 35%; }
-  }
-  @keyframes magnifier-shimmer {
+  @keyframes hero-title-shimmer {
     0%, 100% { background-position: 0% 50%; }
     50%      { background-position: 100% 50%; }
   }
-
-  /* Faint round "glass" outline that follows the same path as the magnifier
-     mask. Purely decorative; aria-hidden in markup. */
-  .magnifier-lens {
-    position: absolute;
-    width: 320px;
-    height: 320px;
-    pointer-events: none;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: radial-gradient(
-      circle,
-      rgba(96, 165, 250, 0.06) 0%,
-      rgba(96, 165, 250, 0.02) 60%,
-      transparent 80%
-    );
-    box-shadow: 0 0 60px rgba(96, 165, 250, 0.12) inset;
-    /* Position via percentage of parent. Animate left/top synced with mask. */
-    left: calc(var(--mx) - 160px);
-    top: calc(var(--my) - 160px);
-    animation: magnifier-roam 8s ease-in-out infinite;
+  @keyframes hero-word-rise {
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* Generic fade + rise for non-title hero elements (subtitle, CTAs, stats) */
@@ -304,16 +254,11 @@
 
   @media (prefers-reduced-motion: reduce) {
     .hero-rise, .hero-spotlight, .hero-bg-in,
-    .magnifier-bright, .magnifier-lens {
+    .hero-title, .hero-word {
       animation: none;
       opacity: 1;
       transform: none;
       filter: none;
-    }
-    .magnifier-bright {
-      /* Leave the gradient visible across the whole heading */
-      -webkit-mask-image: none;
-      mask-image: none;
     }
   }
 }
