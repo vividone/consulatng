@@ -46,21 +46,20 @@ export function WelcomeSection() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="relative hidden aspect-square w-full max-w-sm lg:block">
+            <div className="relative hidden w-full lg:block">
               <div
                 aria-hidden
                 className="absolute inset-0 rounded-full bg-accent/15 blur-3xl"
               />
-              <div className="relative flex h-full items-center justify-center">
-                <Image
-                  src="/brand/consulat-icon.png"
-                  alt=""
-                  width={100}
-                  height={100}
-                  className="h-48 w-48 drop-shadow-xl"
-                  aria-hidden
-                />
-              </div>
+              <Image
+                src="/brand/welcome.png"
+                alt=""
+                width={1408}
+                height={768}
+                sizes="(min-width: 1024px) 33vw, 0px"
+                className="relative h-auto w-full drop-shadow-xl"
+                aria-hidden
+              />
             </div>
           </Reveal>
         </div>
