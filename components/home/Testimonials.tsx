@@ -11,7 +11,7 @@ const TESTIMONIALS = [
     quote:
       "Consulat handled our entire team's e-CERPAC and quota renewals seamlessly. Their proactive monitoring meant we never had a single expiry surprise.",
     name: "Ajit",
-    role: "HR Director",
+    role: "Petroleum Engineer",
     country: "India",
     flag: "🇮🇳",
   },
@@ -19,7 +19,7 @@ const TESTIMONIALS = [
     quote:
       "When we expanded operations into Lagos, Consulat became our go-to immigration partner. The team is responsive, meticulous, and deeply knowledgeable.",
     name: "Yoann",
-    role: "Operations Lead",
+    role: "Operations Director Africa",
     country: "France",
     flag: "🇫🇷",
   },
@@ -27,7 +27,7 @@ const TESTIMONIALS = [
     quote:
       "From visa-on-arrival to long-term residence permits, Consulat has supported our entire expatriate workforce in Nigeria. We couldn't recommend them more.",
     name: "Sanne",
-    role: "Global Mobility Manager",
+    role: "Agrifoods Strategist",
     country: "Netherlands",
     flag: "🇳🇱",
   },

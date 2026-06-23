@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/shared/PageHero";
+import { ServiceBanner } from "@/components/services/ServiceBanner";
 import { ServiceCTA } from "@/components/services/ServiceCTA";
 import { ServiceNav } from "@/components/services/ServiceNav";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/constants";
-import { Ear, Sparkles, HeartHandshake, GraduationCap } from "lucide-react";
+import { Ear, Sparkles, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = buildMetadata({
   title: "Training Services — Consulat",
@@ -59,22 +60,7 @@ export default function TrainingPage() {
         subtitle="Building skills you can actually use."
       />
 
-      <div className="relative -mt-10 sm:-mt-16 lg:-mt-20">
-        <div className="container-prose">
-          <div className="relative flex aspect-[16/7] items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-light to-accent shadow-2xl shadow-primary/30 ring-1 ring-white/10">
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-25"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px)",
-                backgroundSize: "28px 28px",
-              }}
-            />
-            <GraduationCap className="relative h-20 w-20 text-white/90 sm:h-28 sm:w-28" />
-          </div>
-        </div>
-      </div>
+      <ServiceBanner src="/services/training.jpg" alt="Training Services" />
 
       <section className="bg-white pb-14 pt-12 sm:pb-20 sm:pt-16">
         <div className="container-prose max-w-4xl">

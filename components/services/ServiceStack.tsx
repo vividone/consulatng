@@ -11,8 +11,9 @@ import { SERVICES, type ServiceSlug } from "@/lib/constants";
 const SERVICE_IMAGES: Partial<Record<ServiceSlug, string>> = {
   "business-permit":  "/services/business-permit.jpg",
   "expatriate-quota": "/services/expatriate-quota.jpg",
-  "e-cerpac":         "/services/e-cerpac.jpg",
-  "e-visas":          "/services/e-visas.jpg",
+  "e-cerpac":"/services/e-cerpac.jpg",
+  "e-visas":"/services/e-visas.jpg",
+  "training":"/services/training.jpg",
 };
 
 type Props = {
