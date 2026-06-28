@@ -31,12 +31,12 @@ export function WelcomeSection() {
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               {/* TODO(client): replace href with the actual requirements PDF
                   once supplied. Lives under public/downloads/ by convention. */}
-              <Button asChild size="lg">
+              {/* <Button asChild size="lg">
                 <a href="/downloads/visa-requirements.pdf" download>
                   <Download className="h-4 w-4" />
                   Click to download requirements
                 </a>
-              </Button>
+              </Button> */}
               <Button asChild variant="secondary" size="lg">
                 <Link href="/contact">
                   Talk to our team <ArrowRight className="h-4 w-4" />
