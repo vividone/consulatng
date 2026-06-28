@@ -153,7 +153,9 @@ export default function ContactPage() {
           <div className="aspect-[16/7] w-full overflow-hidden rounded-2xl border border-grey-200 shadow-sm">
             <iframe
               title="Consulat office map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=3.34%2C6.42%2C3.42%2C6.48&layer=mapnik"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                `${SITE.address.streetAddress}, ${SITE.address.addressLocality}, ${SITE.address.addressRegion}, Nigeria`
+              )}&output=embed`}
               className="h-full w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
