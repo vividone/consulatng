@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FlagMarquee } from "./FlagMarquee";
 import { CountUpStat } from "./CountUpStat";
 import { WorldMap } from "@/components/shared/WorldMap";
-import { SITE } from "@/lib/constants";
+import { SITE, CALENDAR_URL } from "@/lib/constants";
 
 const HERO_TITLE =
   "Your trusted partner for immigration & work permits in Nigeria";
@@ -128,7 +128,9 @@ export function Hero() {
               </Link>
             </Button>
             <Button asChild variant="white" size="lg">
-              <Link href="/contact">Book a Consultation</Link>
+              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+                Book a Consultation
+              </a>
             </Button>
           </div>
 

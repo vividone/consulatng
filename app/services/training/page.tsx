@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHero } from "@/components/shared/PageHero";
 import { ServiceBanner } from "@/components/services/ServiceBanner";
 import { ServiceCTA } from "@/components/services/ServiceCTA";
@@ -63,14 +64,25 @@ export default function TrainingPage() {
       <ServiceBanner src="/services/training.jpg" alt="Training Services" />
 
       <section className="bg-white pb-14 pt-12 sm:pb-20 sm:pt-16">
-        <div className="container-prose max-w-4xl">
-          <div className="space-y-5 text-[17px] leading-relaxed text-grey-700">
-            <p>
-              At our core, we believe people grow when they&apos;re given the right tools and the confidence to use them. That&apos;s why training isn&apos;t an add-on for us — it&apos;s one of the main ways we help teams and individuals move forward.
-            </p>
-            <p>
-              We&apos;ve all sat through trainings that feel like a blur of slides and jargon. That&apos;s not how we work. Our sessions are practical, clear, and built around your real challenges. No fluff, no one-size-fits-all lectures — just skills you can use the next day.
-            </p>
+        <div className="container-prose">
+          <div className="grid items-center gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
+            <div className="space-y-5 text-[17px] leading-relaxed text-grey-700">
+              <p>
+                At our core, we believe people grow when they&apos;re given the right tools and the confidence to use them. That&apos;s why training isn&apos;t an add-on for us — it&apos;s one of the main ways we help teams and individuals move forward.
+              </p>
+              <p>
+                We&apos;ve all sat through trainings that feel like a blur of slides and jargon. That&apos;s not how we work. Our sessions are practical, clear, and built around your real challenges. No fluff, no one-size-fits-all lectures — just skills you can use the next day.
+              </p>
+            </div>
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-grey-200">
+              <Image
+                src="/services/training-cover.jpg"
+                alt="Training session in progress"
+                fill
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>

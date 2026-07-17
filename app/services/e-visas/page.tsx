@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/shared/PageHero";
 import { ServiceBanner } from "@/components/services/ServiceBanner";
-import { ServiceItem } from "@/components/services/ServiceItem";
+import { ServiceCoverGrid } from "@/components/services/ServiceCoverGrid";
 import { ServiceCTA } from "@/components/services/ServiceCTA";
 import { ServiceNav } from "@/components/services/ServiceNav";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { Reveal } from "@/components/shared/Reveal";
 import { buildMetadata } from "@/lib/metadata";
 import { SITE } from "@/lib/constants";
 
@@ -114,18 +113,12 @@ export default function EVisasPage() {
         </div>
       </section>
 
-      <section className="bg-grey-50 py-14 sm:py-20">
-        <div className="container-prose">
-          <h2 className="mb-10 font-display text-3xl font-bold text-grey-900 sm:text-4xl">
-            What We Cover
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {ITEMS.map((item, i) => (
-              <Reveal key={item.title} delay={i * 80}><ServiceItem {...item} /></Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServiceCoverGrid
+        heading="What We Cover"
+        items={ITEMS}
+        image="/services/e-visas-cover.jpg"
+        imageAlt="e-Visa applications for Nigeria"
+      />
 
       <ServiceNav currentSlug="e-visas" />
       <ServiceCTA

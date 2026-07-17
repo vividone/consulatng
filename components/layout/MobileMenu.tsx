@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, CALENDAR_URL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 
@@ -89,9 +89,14 @@ export function MobileMenu() {
         </ul>
         <div className="mt-8">
           <Button asChild className="w-full">
-            <Link href="/contact" onClick={() => setOpen(false)}>
+            <a
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+            >
               Book a Consultation
-            </Link>
+            </a>
           </Button>
         </div>
       </nav>

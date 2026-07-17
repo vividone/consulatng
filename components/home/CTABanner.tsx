@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/Reveal";
-import { SITE } from "@/lib/constants";
+import { SITE, CALENDAR_URL } from "@/lib/constants";
 
 type CTABannerProps = {
   heading?: string;
@@ -24,7 +23,9 @@ export function CTABanner({
         </Reveal>
         <Reveal delay={120} className="flex flex-col gap-3 sm:flex-row lg:shrink-0">
           <Button asChild size="lg">
-            <Link href="/contact">Book a Consultation</Link>
+            <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+              Book a Consultation
+            </a>
           </Button>
           <Button asChild variant="white" size="lg">
             <a href={SITE.phoneHref}>

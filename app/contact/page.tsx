@@ -5,7 +5,7 @@ import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/metadata";
-import { SITE } from "@/lib/constants";
+import { SITE, CALENDAR_URL } from "@/lib/constants";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact Consulat — Book an Immigration Consultation",
@@ -121,7 +121,9 @@ export default function ContactPage() {
                 Schedule a 30-minute call at a time that works for you.
               </p>
               <Button asChild variant="secondary" size="sm" className="mt-4">
-                <Link href="#calendly">Book a Call →</Link>
+                <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+                  Book a Call →
+                </a>
               </Button>
             </div>
           </div>
