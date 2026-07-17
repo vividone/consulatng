@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CALENDAR_URL } from "@/lib/constants";
 
 type Props = {
   heading: string;
@@ -17,7 +18,9 @@ export function ServiceCTA({ heading, body }: Props) {
           <p className="mx-auto mt-3 max-w-xl text-grey-700">{body}</p>
           <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-7 sm:flex-row sm:items-center">
             <Button asChild>
-              <Link href="/contact">Book a Consultation</Link>
+              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+                Book a Consultation
+              </a>
             </Button>
             <Button asChild variant="secondary">
               <Link href="/contact">Contact Us</Link>

@@ -27,6 +27,12 @@ export const SITE = {
   },
 } as const;
 
+/**
+ * External Google Calendar booking page — opens in a new tab from every
+ * "Book a Consultation" CTA sitewide.
+ */
+export const CALENDAR_URL = "https://calendar.app.google/SpQcgjw5VWJTxdqo9";
+
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },

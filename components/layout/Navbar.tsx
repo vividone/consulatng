@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronDown, FileText, IdCard, Plane, Users } from "lucide-react";
-import { NAV_LINKS, SERVICES } from "@/lib/constants";
+import { NAV_LINKS, SERVICES, CALENDAR_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./MobileMenu";
@@ -85,7 +85,9 @@ export function Navbar() {
 
           <div className="hidden lg:block">
             <Button asChild size="sm">
-              <Link href="/contact">Book a Consultation</Link>
+              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+                Book a Consultation
+              </a>
             </Button>
           </div>
 

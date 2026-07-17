@@ -85,6 +85,7 @@ const findDialCode = (countryCode: string) =>
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -99,15 +100,41 @@ export function ContactForm() {
   });
 
   const onSubmit = async (values: FormValues) => {
-    // In production: POST to /api/contact or external form service.
+    setServerError(null);
     // Combine the country dial code with the local number for a normalised
-    // E.164-ish phone string that downstream systems can consume directly.
+    // E.164-ish phone string that the API can forward straight to email.
     const dial = findDialCode(values.phoneCountry);
     const fullPhone = values.phone ? `${dial} ${values.phone.trim()}` : "";
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    console.log("Contact form submission:", { ...values, fullPhone });
-    setSubmitted(true);
-    reset();
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: values.fullName,
+          companyName: values.companyName,
+          email: values.email,
+          fullPhone,
+          service: values.service,
+          expatriates: values.expatriates,
+          message: values.message ?? "",
+        }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setServerError(
+          data?.error ?? "We couldn't send your message. Please try again."
+        );
+        return;
+      }
+      setSubmitted(true);
+      reset();
+    } catch {
+      setServerError(
+        "Network error — please check your connection and try again."
+      );
+    }
   };
 
   if (submitted) {
@@ -260,6 +287,15 @@ export function ContactForm() {
           {...register("message")}
         />
       </div>
+
+      {serverError && (
+        <p
+          role="alert"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
+          {serverError}
+        </p>
+      )}
 
       <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
         {isSubmitting ? "Sending..." : (
