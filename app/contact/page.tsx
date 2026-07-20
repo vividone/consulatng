@@ -61,6 +61,9 @@ export default function ContactPage() {
                   <a href={SITE.phoneHref} className="mt-1 block text-grey-900 hover:text-accent">
                     {SITE.phone}
                   </a>
+                  <a href={SITE.phone2Href} className="mt-1 block text-grey-900 hover:text-accent">
+                    {SITE.phone2}
+                  </a>
                 </div>
               </li>
               <li className="flex gap-4">
