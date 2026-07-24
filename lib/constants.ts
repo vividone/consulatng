@@ -7,9 +7,11 @@ export const SITE = {
   description:
     "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and e-CERPAC services.",
   email: "info@consulatng.net",
-  phone: "+234 8141657981",
-  altphone: "02013438504",
+  phone: "+2348141657981",
   phoneHref: "tel:+2348141657981",
+  phone2: "+2348026442090",
+  phone2Href: "tel:+2348026442090",
+  altphone: "02013438504",
   whatsapp: "+234 814657981",
   whatsappHref:
     "https://wa.me/2348141657981?text=Hello%20Consulat%2C%20I%20would%20like%20to%20enquire%20about%20your%20immigration%20services.",
