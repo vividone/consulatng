@@ -129,7 +129,7 @@ export function Hero() {
             </Button>
             <Button asChild variant="white" size="lg">
               <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
-                Book a Consultation
+                Book a Free Consultation
               </a>
             </Button>
           </div>

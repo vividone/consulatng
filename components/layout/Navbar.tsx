@@ -86,7 +86,7 @@ export function Navbar() {
           <div className="hidden lg:block">
             <Button asChild size="sm">
               <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
-                Book a Consultation
+                Book a Free Consultation
               </a>
             </Button>
           </div>

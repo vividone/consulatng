@@ -115,7 +115,7 @@ export default function ContactPage() {
 
             <div className="mt-10 rounded-2xl border border-grey-200 bg-grey-50 p-6">
               <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent">
-                <Calendar className="h-4 w-4" /> Book a consultation
+                <Calendar className="h-4 w-4" /> Book a free consultation
               </p>
               <h3 className="mt-2 font-display text-lg font-bold text-grey-900">
                 Prefer to speak directly with a consultant?

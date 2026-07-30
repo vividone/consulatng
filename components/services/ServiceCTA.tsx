@@ -19,7 +19,7 @@ export function ServiceCTA({ heading, body }: Props) {
           <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-7 sm:flex-row sm:items-center">
             <Button asChild>
               <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
-                Book a Consultation
+                Book a Free Consultation
               </a>
             </Button>
             <Button asChild variant="secondary">

@@ -31,7 +31,7 @@ export const SITE = {
 
 /**
  * External Google Calendar booking page — opens in a new tab from every
- * "Book a Consultation" CTA sitewide.
+ * "Book a Free Consultation" CTA sitewide.
  */
 export const CALENDAR_URL = "https://calendar.app.google/SpQcgjw5VWJTxdqo9";
 

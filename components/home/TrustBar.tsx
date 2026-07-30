@@ -10,7 +10,9 @@ type Client = {
 const CLIENTS: Client[] = [
   { name: "Anotech",          src: "/clients/anotech.webp",                 width: 264, height: 65 },
   { name: "FairMoney",        src: "/clients/fairmoney.webp",               width: 300, height: 66 },
+  { name: "Mandilas",         src: "/clients/mandilas.jpeg",                width: 646, height: 474 },
   { name: "Spie",             src: "/clients/Spie.webp",                    width: 186, height: 90 },
+  { name: "IOTA",             src: "/clients/iota.jpeg",                    width: 344, height: 160 },
   { name: "Euro Engineering", src: "/clients/4-client-euro-engineer.webp",  width: 167, height: 90 },
   { name: "PA",               src: "/clients/pa.webp",                      width: 157, height: 90 },
   { name: "The White Baker",  src: "/clients/ThewhiteBaker.webp",           width: 300, height: 86 },

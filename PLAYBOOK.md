@@ -520,6 +520,11 @@ or the whole page feels frantic.
 | Section images | `public/services/`, `public/about-bridges/` | Discovered at build time |
 | Client logos | `public/clients/` | Listed in `TrustBar` |
 
+**Making this editable by a client?** See
+[CMS_PLAYBOOK.md](./CMS_PLAYBOOK.md) — how to retrofit a CMS (headless
+WordPress, Payload, or Keystatic) onto exactly this content layout,
+including which CMS to pick for a given client's hosting.
+
 ### 6.2 Image handling
 
 - **Always use `next/image`** — get free WebP conversion + responsive `srcset`

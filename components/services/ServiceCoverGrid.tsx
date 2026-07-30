@@ -50,7 +50,7 @@ export function ServiceCoverGrid({
             alt={imageAlt}
             fill
             sizes="(max-width: 1024px) 100vw, 40vw"
-            className="object-cover"
+            className="object-cover object-top"
           />
         </div>
       </div>

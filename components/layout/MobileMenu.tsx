@@ -95,7 +95,7 @@ export function MobileMenu() {
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
             >
-              Book a Consultation
+              Book a Free Consultation
             </a>
           </Button>
         </div>

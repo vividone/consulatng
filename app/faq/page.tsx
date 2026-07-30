@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
-import { FAQS } from "@/lib/faqs";
+import { getFaqs } from "@/lib/faqs";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
@@ -20,17 +20,19 @@ export const metadata: Metadata = buildMetadata({
   keywords: ["Nigeria immigration FAQ", "work permit questions", "e-CERPAC FAQ"],
 });
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQS.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+export default async function FAQPage() {
+  const faqs = await getFaqs();
 
-export default function FAQPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <>
       <JsonLd data={faqSchema} />
@@ -44,7 +46,7 @@ export default function FAQPage() {
         <div className="container-prose max-w-3xl">
           <Reveal>
             <Accordion type="single" collapsible className="w-full">
-              {FAQS.map((faq, i) => (
+              {faqs.map((faq, i) => (
                 <AccordionItem key={faq.q} value={`item-${i}`}>
                   <AccordionTrigger>{faq.q}</AccordionTrigger>
                   <AccordionContent>{faq.a}</AccordionContent>

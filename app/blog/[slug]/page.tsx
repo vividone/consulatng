@@ -11,25 +11,26 @@ import { SITE } from "@/lib/constants";
 
 type Props = { params: { slug: string } };
 
-export function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  return (await getAllPostSlugs()).map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
   if (!post) return {};
   return buildMetadata({
-    title: post.title,
-    description: post.excerpt,
+    // Prefer the editor's Yoast overrides when WordPress supplies them.
+    title: post.seoTitle ?? post.title,
+    description: post.seoDescription ?? post.excerpt,
     path: `/blog/${post.slug}`,
   });
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
-  const related = getAllPosts()
+  const related = (await getAllPosts())
     .filter((p) => p.slug !== post.slug)
     .slice(0, 2);
 
@@ -39,6 +40,9 @@ export default function BlogPostPage({ params }: Props) {
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
+    // Freshness is a ranking input; datePublished alone leaves Google
+    // assuming the article has never been revised.
+    dateModified: post.modified,
     author: { "@type": "Organization", name: post.author },
     publisher: { "@id": `${SITE.url}/#organization` },
     mainEntityOfPage: {
@@ -79,7 +83,16 @@ export default function BlogPostPage({ params }: Props) {
 
         <div className="container-prose max-w-3xl py-14 sm:py-20">
           <div className="prose prose-lg prose-slate max-w-none prose-headings:font-display prose-headings:text-grey-900 prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-grey-900">
-            <MDXRemote source={post.content} />
+            {post.format === "html" ? (
+              /* WordPress returns pre-rendered HTML. It is inserted as-is:
+                 WordPress applies its own kses filtering to anything an
+                 Editor-role user submits, and only trusted administrators can
+                 post raw markup. If untrusted contributors are ever given
+                 publish rights, run this through a sanitiser first. */
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            ) : (
+              <MDXRemote source={post.content} />
+            )}
           </div>
         </div>
       </article>

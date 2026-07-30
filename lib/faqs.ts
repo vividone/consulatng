@@ -1,3 +1,12 @@
+import { fetchFaqs, isWpEnabled } from "./wp";
+
+export type Faq = { q: string; a: string };
+
+/**
+ * Fallback FAQs, used until `WP_API_URL` is configured. Kept in place rather
+ * than deleted so the site still builds and renders correctly with no CMS —
+ * see lib/wp.ts for the reasoning.
+ */
 export const FAQS = [
   {
     q: "What is a Business Permit and does my company need one?",
@@ -36,3 +45,16 @@ export const FAQS = [
     a: "Simply reach out via our contact page or book a consultation call. We will assess your requirements and provide a clear recommendation on the permits, visas, and services your organisation needs.",
   },
 ] as const;
+
+/**
+ * FAQs from WordPress, falling back to the list above.
+ *
+ * An empty CPT returns `[]` from WordPress, which would render an empty
+ * accordion. That is treated as "not migrated yet" and falls back, so the page
+ * is never blank while the client is still entering content.
+ */
+export async function getFaqs(): Promise<readonly Faq[]> {
+  if (!isWpEnabled()) return FAQS;
+  const faqs = await fetchFaqs();
+  return faqs.length > 0 ? faqs : FAQS;
+}

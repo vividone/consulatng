@@ -20,7 +20,7 @@ export function ServiceBanner({ src, alt }: Props) {
             alt={alt}
             fill
             sizes="(max-width: 1024px) 100vw, 1280px"
-            className="object-cover"
+            className="object-cover object-top"
             priority
           />
           {/* subtle bottom-fade so any contained text in future is legible */}
