@@ -3,5 +3,12 @@
   "framework": "nextjs",
   "buildCommand": "next build",
   "installCommand": "npm install",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "redirects": [
+    {
+      "source": "/webmail",
+      "destination": "https://webmail.consulatng.net",
+      "permanent": true
+    }
+  ]
 }
