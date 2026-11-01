@@ -1,11 +1,16 @@
-/* Admin theming. Consulat's primary blue, so the admin does not look like a
-   generic Payload install to the client. */
-@layer payload-default {
-  :root {
-    --theme-elevation-0: #ffffff;
-  }
-  html[data-theme="light"] {
-    --color-base-800: #0829a5;
-    --theme-success-500: #3b82f6;
-  }
-}
+/* Admin theming.
+ *
+ * Deliberately minimal. Payload's --color-base-* scale is a greyscale ramp,
+ * not a brand palette: --color-base-800 (rgb(47,47,47)) feeds
+ * --theme-elevation-800, which the admin uses 63 times for body text and
+ * button fills. Recolouring it to the Consulat blue turns most of the
+ * interface's text blue rather than branding it.
+ *
+ * Likewise, overriding --theme-elevation-0 on :root rather than on
+ * html[data-theme="light"] forces a white surface in dark mode too, against
+ * light text.
+ *
+ * The admin is already identified as Consulat's by admin.meta.titleSuffix in
+ * payload.config.ts. If we want visual branding later, it should target
+ * specific components and be checked in both themes.
+ */

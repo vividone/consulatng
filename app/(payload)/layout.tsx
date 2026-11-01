@@ -5,6 +5,12 @@
 import type { ServerFunctionClient } from "payload";
 import config from "@payload-config";
 import { handleServerFunctions, RootLayout } from "@payloadcms/next/layouts";
+/* Defines Payload's theme scale (--color-base-*, --theme-elevation-*).
+   @payloadcms/ui ships the component styles but not these variables, and it
+   references --theme-elevation-* 23 times, so without this import every
+   background, border and text colour in the admin resolves to nothing and
+   the interface renders unstyled. */
+import "@payloadcms/next/css";
 import React from "react";
 
 import { importMap } from "./backoffice/importMap";
