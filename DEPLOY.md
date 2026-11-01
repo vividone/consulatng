@@ -167,14 +167,30 @@ statically generated at build time. Publishing in the back office purges the
 affected paths immediately via `cms/revalidate.ts`, so the live site updates
 without a redeploy — verified end to end against a production build.
 
-What is CMS-managed: blog posts, FAQs, team members, testimonials, client
-logos, and Site Settings (contact details, hours, address, social links,
-booking URL).
+What is CMS-managed:
 
-What stays in code, deliberately: `SITE` identity (name, legal name, domain,
-URL, tagline), `NAV_LINKS`, and `SERVICES`. These are wired into routing,
-canonical URLs and the logo lockup, where an editor's typo would break the
-site rather than reword it.
+| | |
+|---|---|
+| Content | blog posts, FAQs, team members, testimonials, client logos |
+| Services | the five service lines and their whole detail page, including SEO and structured data. Adding a sixth is a back-office job |
+| Pages | home, about, services index, FAQ and contact — headings, prose, images, statistics and per-page SEO |
+| Site Settings | contact details, hours, address, social links, booking URL, and the shared call-to-action banner |
+
+What stays in code, deliberately:
+
+- **`SITE` identity** — name, legal name, domain, URL, tagline. Wired into
+  routing, canonical URLs and the logo lockup, where a typo breaks the site
+  rather than rewording it.
+- **`NAV_LINKS`** — the top-level navigation, which maps to routes that have
+  to exist.
+- **Privacy and Terms.** Both interpolate the registered name, domain and
+  office address from Site Settings. In rich text those values would freeze
+  as literal prose and go stale the first time the office moves — editable
+  but wrong is worse than not editable. Once counsel's rewrite lands the text
+  becomes static and it can move into the CMS.
+- **Contact details on the contact page.** They are rendered from Site
+  Settings rather than duplicated, so the footer, the contact page and the
+  organisation structured data cannot disagree.
 
 ## 7. First admin user
 
