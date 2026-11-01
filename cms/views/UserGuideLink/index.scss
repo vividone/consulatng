@@ -1,0 +1,29 @@
+/* Matches the weight and spacing of Payload's own nav links, set apart by a
+   rule above so it reads as a separate item rather than another collection. */
+.user-guide-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: calc(var(--base) * 0.6);
+  padding-top: calc(var(--base) * 0.6);
+  border-top: 1px solid var(--theme-elevation-150);
+  color: var(--theme-elevation-600);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--theme-elevation-1000);
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.6875rem;
+    line-height: 1;
+  }
+}

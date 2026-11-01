@@ -200,6 +200,20 @@ credentials ever live in the repo.
 
 Afterwards, add staff in the back office under **Access → Staff**.
 
+A guide for them is built into the admin at **/backoffice/user-guide**, linked
+from the bottom of the sidebar. It covers what each area edits, the fact that
+saving publishes immediately for everything except blog posts, and what is
+deliberately left to a developer. It is a Payload custom view
+(`cms/views/UserGuide`), so it sits behind the same login as the rest of the
+admin and cannot be read by the public.
+
+Payload resolves custom view components through the import map, so after
+editing the guide or its sidebar link, re-run:
+
+```bash
+npm run payload:importmap
+```
+
 ---
 
 ## 8. Local development

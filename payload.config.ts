@@ -74,6 +74,24 @@ export default buildConfig({
         "app/(payload)/backoffice/importMap.js",
       ),
     },
+
+    /**
+     * Staff guide at /backoffice/user-guide, plus its sidebar link.
+     *
+     * Documentation that lives where the work happens, behind the same
+     * login, rather than a file somebody has to find. Payload resolves
+     * these paths through the import map, so `npm run payload:importmap`
+     * has to be re-run whenever one of them changes.
+     */
+    components: {
+      views: {
+        userGuide: {
+          Component: "/cms/views/UserGuide#default",
+          path: "/user-guide",
+        },
+      },
+      afterNavLinks: ["/cms/views/UserGuideLink#UserGuideLink"],
+    },
   },
 
   collections: [
