@@ -44,3 +44,6 @@ public/uploads/
 # NOTE: cms/payload-types.ts is generated but IS committed, on purpose —
 # a fresh clone must typecheck without first running the generator, which
 # needs a live database. Regenerate with `npm run payload:types`.
+
+# embedded-postgres download cache
+db/.temp/
