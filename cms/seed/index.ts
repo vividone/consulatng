@@ -49,6 +49,7 @@ import {
   TEAM,
   TESTIMONIALS,
 } from "./snapshot";
+import { SERVICES } from "./services";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(dirname, "../..");
@@ -88,12 +89,42 @@ async function ensureMedia(
   }
 
   const filename = path.basename(filePath);
+
+  /*
+   * Match the stem, not just the exact filename.
+   *
+   * Payload appends a numeric suffix when it thinks the name is taken, so
+   * `business-permit.jpg` can land as `business-permit-1.jpg`. It does this
+   * against the collection's local static directory even when uploads are
+   * going to S3, which means seeding a remote database from a machine that
+   * has previously seeded locally renames every file. An exact-match lookup
+   * then misses on the next run and uploads a second copy.
+   *
+   * The pattern is anchored at both ends and only allows `-<digits>` before
+   * the extension, so `training.jpg` will not match `training-cover.jpg`.
+   */
+  const stem = path.basename(filename, path.extname(filename));
+  const ext = path.extname(filename);
   const existing = await payload.find({
     collection: "media",
-    where: { filename: { equals: filename } },
-    limit: 1,
+    where: {
+      or: [
+        { filename: { equals: filename } },
+        { filename: { like: `${stem}-` } },
+      ],
+    },
+    limit: 50,
     pagination: false,
   });
+  const isSameImage = (name: string) => {
+    if (name === filename) return true;
+    if (!name.endsWith(ext)) return false;
+    const base = name.slice(0, name.length - ext.length);
+    if (!base.startsWith(`${stem}-`)) return false;
+    const suffix = base.slice(stem.length + 1);
+    return suffix.length > 0 && [...suffix].every((c) => c >= "0" && c <= "9");
+  };
+  existing.docs = existing.docs.filter((d) => isSameImage(d.filename ?? ""));
 
   if (existing.docs.length > 0) {
     note("media", false);
@@ -259,6 +290,85 @@ async function seedPosts(payload: Payload) {
   }
 }
 
+async function seedServices(payload: Payload) {
+  const editorConfig = await editorConfigFactory.default({
+    config: payload.config,
+  });
+  const rich = (markdown: string) =>
+    convertMarkdownToLexical({ editorConfig, markdown });
+
+  for (const svc of SERVICES) {
+    const existing = await payload.find({
+      collection: "services",
+      where: { slug: { equals: svc.slug } },
+      limit: 1,
+      pagination: false,
+    });
+    if (existing.docs.length > 0) {
+      note("services", false);
+      continue;
+    }
+
+    // Images live in public/services/ and are uploaded into the media
+    // library, so an editor can swap them without touching the repo.
+    const media = async (file: string | undefined, alt: string) =>
+      file ? await ensureMedia(payload, `services/${file}`, alt) : null;
+
+    await payload.create({
+      collection: "services",
+      data: {
+        title: svc.title,
+        shortTitle: svc.shortTitle,
+        slug: svc.slug,
+        order: svc.order,
+        summary: svc.summary,
+        covers: svc.covers.map((label) => ({ label })),
+        cardImage: await media(svc.cardImage, svc.title),
+
+        heroEyebrow: svc.heroEyebrow,
+        heroTitle: svc.heroTitle,
+        heroSubtitle: svc.heroSubtitle,
+        bannerImage: await media(svc.bannerImage, svc.bannerAlt ?? svc.title),
+        bannerAlt: svc.bannerAlt,
+
+        intro: rich(svc.intro),
+        introImage: await media(svc.introImage, svc.introImageAlt ?? svc.title),
+        introImageAlt: svc.introImageAlt,
+
+        coverHeading: svc.coverHeading,
+        coverItems: (svc.coverItems ?? []).map((item) => ({
+          title: item.title,
+          description: item.description,
+          bullets: (item.bullets ?? []).map((text) => ({ text })),
+        })),
+        coverImage: await media(svc.coverImage, svc.coverImageAlt ?? svc.title),
+        coverImageAlt: svc.coverImageAlt,
+
+        highlightsHeading: svc.highlightsHeading,
+        highlights: svc.highlights ?? [],
+
+        sections: (svc.sections ?? []).map((section) => ({
+          heading: section.heading,
+          align: section.align,
+          intro: section.intro ? rich(section.intro) : null,
+          checklist: (section.checklist ?? []).map((text) => ({ text })),
+          outro: section.outro ? rich(section.outro) : null,
+        })),
+
+        ctaHeading: svc.ctaHeading,
+        ctaBody: svc.ctaBody,
+
+        seoTitle: svc.seoTitle,
+        seoDescription: svc.seoDescription,
+        keywords: svc.keywords.map((keyword) => ({ keyword })),
+        schemaServiceType: svc.schemaServiceType,
+        schemaDescription: svc.schemaDescription,
+      },
+    });
+    note("services", true);
+  }
+}
+
 async function seedSiteSettings(payload: Payload) {
   const current = await payload.findGlobal({ slug: "site-settings" });
 
@@ -295,6 +405,7 @@ async function main() {
   await seedTeam(payload);
   await seedClientLogos(payload);
   await seedPosts(payload);
+  await seedServices(payload);
   await seedSiteSettings(payload);
 
   const names = [...new Set([...Object.keys(created), ...Object.keys(skipped)])].sort();

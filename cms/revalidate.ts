@@ -32,6 +32,22 @@ const PATHS = {
 } as const;
 
 /**
+ * Services appear in more places than any other collection: their own page,
+ * the services index, the home page stack, and the navigation and footer on
+ * every page. The layout covers the last of those, which is why the full
+ * page list is purged rather than just the service's own URL.
+ */
+const SERVICE_PATHS = [
+  "/",
+  "/about",
+  "/services",
+  "/faq",
+  "/contact",
+  "/blog",
+  "/sitemap.xml",
+] as const;
+
+/**
  * `revalidatePath` only works inside a Next request or render context. Payload
  * writes also happen well outside one — the content seed, migration scripts,
  * scheduled jobs — and there it throws "static generation store missing".
@@ -106,5 +122,30 @@ export const revalidatePost: CollectionAfterChangeHook = ({
 export const revalidatePostOnDelete: CollectionAfterDeleteHook = ({ doc }) => {
   purge(["/blog", "/sitemap.xml"]);
   if (doc?.slug) purge([`/blog/${doc.slug}`]);
+  return doc;
+};
+
+/**
+ * A service change also has to purge the detail page, and the previous URL
+ * when the slug changed — otherwise the old path keeps serving a page the
+ * CMS no longer knows about, and the prev/next links point into a 404.
+ */
+export const revalidateService: CollectionAfterChangeHook = ({
+  doc,
+  previousDoc,
+}) => {
+  purge(SERVICE_PATHS);
+  if (doc?.slug) purge([`/services/${doc.slug}`]);
+  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
+    purge([`/services/${previousDoc.slug}`]);
+  }
+  return doc;
+};
+
+export const revalidateServiceOnDelete: CollectionAfterDeleteHook = ({
+  doc,
+}) => {
+  purge(SERVICE_PATHS);
+  if (doc?.slug) purge([`/services/${doc.slug}`]);
   return doc;
 };

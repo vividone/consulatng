@@ -44,79 +44,12 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export const SERVICES = [
-  {
-    slug: "business-permit",
-    title: "Business Permit",
-    shortTitle: "Business Permit",
-    summary:
-      "Obtain the legal authorisation your company needs to operate in Nigeria as a foreign-owned or foreign-affiliated business.",
-    covers: [
-      "Eligibility Assessment",
-      "Documentation Preparation",
-      "Ministry Submission",
-      "Follow-Up & Liaison",
-      "Permit Collection",
-    ],
-  },
-  {
-    slug: "expatriate-quota",
-    title: "Expatriate Quota",
-    shortTitle: "Expatriate Quota",
-    summary:
-      "Secure and manage approvals for your organisation to employ foreign nationals in Nigeria. Your selected persons will be employed in Nigeria and will be able to apply for Work and Residence Permits.",
-    covers: [
-      "Establishment Quota",
-      "Additional Quota",
-      "Renewal",
-      "Monthly Returns",
-      "Deletion Returns",
-      "Immigration Visits",
-      "Portal Management",
-    ],
-  },
-  {
-    slug: "e-cerpac",
-    title: "e-CERPAC (Residence Permits)",
-    shortTitle: "e-CERPAC",
-    summary:
-      "Obtain and manage Combined Expatriate Residence Permits and Aliens Cards for your workforce, including new applications, renewals, regularisation, and migration. Your workforce will have the full benefits and privileges of being Nigerian residents.",
-    covers: [
-      "Migration / Transitioning",
-      "Regularisation",
-      "In-Country Renewal",
-      "Out-Country Renewal",
-      "Landing Page (Entry & Exit)",
-    ],
-  },
-  {
-    slug: "e-visas",
-    title: "e-Visas",
-    shortTitle: "e-Visas",
-    summary:
-      "Facilitate entry into Nigeria with the right visa category — business visas, temporary work permits, tourist visas, and visa-on-arrival processing for both business and TWP purposes.",
-    covers: [
-      "Business Visa",
-      "Temporary Work Permit (TWP)",
-      "Tourist Visa",
-      "Visa on Arrival (Business)",
-      "Visa on Arrival (TWP)",
-    ],
-  },
-  {
-    slug: "training",
-    title: "Training",
-    shortTitle: "Training",
-    summary:
-      "Building skills you can actually use. Practical, tailored training sessions designed around your team's real challenges — no fluff, no one-size-fits-all lectures, just skills your people can apply the next day.",
-    covers: [
-      "Leadership Development",
-      "Communication Skills",
-      "Project Management",
-      "Digital Skills",
-      "Bespoke Programmes",
-    ],
-  },
-] as const;
-
-export type ServiceSlug = (typeof SERVICES)[number]["slug"];
+/*
+ * SERVICES used to live here as a hardcoded array, with the five service
+ * pages written out by hand beside it. Both now come from the Services
+ * collection in the CMS — read through getServiceSummaries() in
+ * lib/content.ts — so the business can add or reword a service without a
+ * developer. What remains in this file is structural identity only: values
+ * wired into routing and the logo lockup, where an editor's typo would break
+ * the site rather than reword it.
+ */

@@ -12,6 +12,7 @@ import { ClientLogos } from "./cms/collections/ClientLogos";
 import { Faqs } from "./cms/collections/Faqs";
 import { Media } from "./cms/collections/Media";
 import { Posts } from "./cms/collections/Posts";
+import { Services } from "./cms/collections/Services";
 import { Staff } from "./cms/collections/Staff";
 import { TeamMembers } from "./cms/collections/TeamMembers";
 import { Testimonials } from "./cms/collections/Testimonials";
@@ -74,6 +75,7 @@ export default buildConfig({
   collections: [
     // Content
     Posts,
+    Services,
     Faqs,
     TeamMembers,
     Testimonials,

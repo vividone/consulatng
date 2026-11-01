@@ -1,21 +1,21 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { SERVICES, type ServiceSlug } from "@/lib/constants";
+import { adjacentServices, type ServiceSummary } from "@/lib/content";
 
 type Props = {
-  currentSlug: ServiceSlug;
+  services: ServiceSummary[];
+  currentSlug: string;
 };
 
 /**
  * Previous / next service navigation — wraps around at the ends so the
  * pair is always shown. Sits between the page content and the closing CTA.
  */
-export function ServiceNav({ currentSlug }: Props) {
-  const idx = SERVICES.findIndex((s) => s.slug === currentSlug);
-  if (idx === -1) return null;
+export function ServiceNav({ services, currentSlug }: Props) {
+  const adjacent = adjacentServices(services, currentSlug);
+  if (!adjacent) return null;
 
-  const prev = SERVICES[(idx - 1 + SERVICES.length) % SERVICES.length];
-  const next = SERVICES[(idx + 1) % SERVICES.length];
+  const { prev, next } = adjacent;
 
   return (
     <section className="border-y border-grey-200 bg-white py-14 sm:py-20">

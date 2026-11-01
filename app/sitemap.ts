@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getPosts } from "@/lib/content";
-import { SITE, SERVICES } from "@/lib/constants";
+import { getPosts, getServiceSummaries } from "@/lib/content";
+import { SITE } from "@/lib/constants";
 
 /**
  * Blog entries carry their own publish date rather than build time. Stamping
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  SERVICES.forEach((s) => {
+  (await getServiceSummaries()).forEach((s) => {
     entries.push({
       url: `${SITE.url}/services/${s.slug}`,
       lastModified: buildTime,

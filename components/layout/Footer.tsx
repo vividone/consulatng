@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { Linkedin, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
-import { SITE, SERVICES } from "@/lib/constants";
-import { getSiteSettings } from "@/lib/content";
+import { SITE } from "@/lib/constants";
+import { getServiceSummaries, getSiteSettings } from "@/lib/content";
 import { Logo } from "./Logo";
 import { WorldMap } from "@/components/shared/WorldMap";
 
 export async function Footer() {
-  const settings = await getSiteSettings();
+  const [settings, services] = await Promise.all([
+    getSiteSettings(),
+    getServiceSummaries(),
+  ]);
 
   return (
     <footer className="relative overflow-hidden bg-primary-dark text-grey-200">
@@ -80,7 +83,7 @@ export async function Footer() {
               Services
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
-              {SERVICES.map((s) => (
+              {services.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}

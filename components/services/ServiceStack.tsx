@@ -2,19 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
-import { SERVICES, type ServiceSlug } from "@/lib/constants";
+import { getServiceSummaries, type ServiceSummary } from "@/lib/content";
 
-/**
- * Photographic image per service. Files live in public/services/.
- * Remove an entry here to fall back to the gradient placeholder.
+/*
+ * Service images used to be a slug-to-path lookup in this file, so adding a
+ * service meant editing a component. They are now the `cardImage` upload on
+ * the service itself; a service without one still falls back to the gradient
+ * placeholder below.
  */
-const SERVICE_IMAGES: Partial<Record<ServiceSlug, string>> = {
-  "business-permit":  "/services/business-permit.jpg",
-  "expatriate-quota": "/services/expatriate-quota.jpg",
-  "e-cerpac":"/services/e-cerpac.jpg",
-  "e-visas":"/services/e-visas.jpg",
-  "training":"/services/training.jpg",
-};
 
 type Props = {
   /**
@@ -38,11 +33,16 @@ type Props = {
  *     offset, the next card lifts up to cover the previous one.
  *   - flow (`sticky={false}`): plain vertical stack that scrolls normally.
  */
-export function ServiceStack({ topOffsetRem = 6, sticky = true }: Props) {
+export async function ServiceStack({
+  topOffsetRem = 6,
+  sticky = true,
+}: Props) {
+  const services = await getServiceSummaries();
+
   if (!sticky) {
     return (
       <div className="container-prose space-y-6 sm:space-y-8">
-        {SERVICES.map((service) => (
+        {services.map((service) => (
           <ServiceStackCard key={service.slug} service={service} />
         ))}
       </div>
@@ -51,7 +51,7 @@ export function ServiceStack({ topOffsetRem = 6, sticky = true }: Props) {
 
   return (
     <div className="container-prose">
-      {SERVICES.map((service) => (
+      {services.map((service) => (
         <div key={service.slug} className="lg:min-h-screen lg:pb-16">
           <div
             className="mb-6 sm:mb-8 lg:sticky lg:mb-0"
@@ -65,12 +65,8 @@ export function ServiceStack({ topOffsetRem = 6, sticky = true }: Props) {
   );
 }
 
-function ServiceStackCard({
-  service,
-}: {
-  service: (typeof SERVICES)[number];
-}) {
-  const image = SERVICE_IMAGES[service.slug];
+function ServiceStackCard({ service }: { service: ServiceSummary }) {
+  const image = service.cardImage;
 
   return (
     <article className="overflow-hidden rounded-3xl bg-white shadow-xl shadow-primary/10">
@@ -112,8 +108,8 @@ function ServiceStackCard({
         <div className="relative min-h-[260px] overflow-hidden bg-gradient-to-br from-primary via-primary-light to-accent lg:min-h-[460px]">
           {image ? (
             <Image
-              src={image}
-              alt={service.title}
+              src={image.url}
+              alt={image.alt || service.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-top"

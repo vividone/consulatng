@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     posts: Post;
+    services: Service;
     faqs: Faq;
     'team-members': TeamMember;
     testimonials: Testimonial;
@@ -82,6 +83,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     posts: PostsSelect<false> | PostsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
@@ -232,6 +234,182 @@ export interface Media {
   };
 }
 /**
+ * Each entry is one service and its page at /services/<slug>. Order controls the sequence in the nav, the home page and prev/next links.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  order: number;
+  /**
+   * Used in the navigation menu and prev/next links.
+   */
+  shortTitle: string;
+  /**
+   * The URL: /services/<slug>. Changing this changes a live, indexed URL — only do it deliberately.
+   */
+  slug: string;
+  /**
+   * One or two sentences. Shown on the service cards on the home page and the services index.
+   */
+  summary: string;
+  /**
+   * Short checklist shown on the service card. Only the first four appear there, so put the most compelling first.
+   */
+  covers?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Photo on the service card. Without one the card falls back to the brand gradient.
+   */
+  cardImage?: (number | null) | Media;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * Wide image directly beneath the hero.
+   */
+  bannerImage?: (number | null) | Media;
+  /**
+   * Describes the banner for screen readers. Leave blank only if the image is purely decorative.
+   */
+  bannerAlt?: string | null;
+  intro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Optional. When set, the intro becomes two columns with this image beside it.
+   */
+  introImage?: (number | null) | Media;
+  introImageAlt?: string | null;
+  coverHeading?: string | null;
+  coverItems?:
+    | {
+        title: string;
+        description: string;
+        /**
+         * Optional sub-points listed beneath the description.
+         */
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  coverImage?: (number | null) | Media;
+  coverImageAlt?: string | null;
+  highlightsHeading?: string | null;
+  highlights?:
+    | {
+        /**
+         * Icons are a fixed list because each maps to a drawing that ships with the site.
+         */
+        icon: 'ear' | 'sparkles' | 'handshake' | 'shield' | 'clock' | 'users';
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  sections?:
+    | {
+        heading: string;
+        align: 'left' | 'center';
+        /**
+         * Prose above the checklist.
+         */
+        intro?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Each item renders with a tick beside it.
+         */
+        checklist?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Prose below the checklist.
+         */
+        outro?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeading: string;
+  ctaBody: string;
+  /**
+   * The browser tab and search result title.
+   */
+  seoTitle: string;
+  /**
+   * The grey text under the search result. Aim for 150–160 characters.
+   */
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Names this service in the structured data search engines read. Usually the plain service name.
+   */
+  schemaServiceType: string;
+  /**
+   * A one-sentence description of the service for the same structured data.
+   */
+  schemaDescription: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Shown on /faq, in the order set below.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -365,6 +543,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
         relationTo: 'faqs';
         value: number | Faq;
       } | null)
@@ -451,6 +633,86 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  order?: T;
+  shortTitle?: T;
+  slug?: T;
+  summary?: T;
+  covers?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  cardImage?: T;
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  bannerImage?: T;
+  bannerAlt?: T;
+  intro?: T;
+  introImage?: T;
+  introImageAlt?: T;
+  coverHeading?: T;
+  coverItems?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  coverImage?: T;
+  coverImageAlt?: T;
+  highlightsHeading?: T;
+  highlights?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  sections?:
+    | T
+    | {
+        heading?: T;
+        align?: T;
+        intro?: T;
+        checklist?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        outro?: T;
+        id?: T;
+      };
+  ctaHeading?: T;
+  ctaBody?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  schemaServiceType?: T;
+  schemaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

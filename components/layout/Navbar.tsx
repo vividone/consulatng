@@ -3,26 +3,48 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ChevronDown, FileText, IdCard, Plane, Users } from "lucide-react";
-import { NAV_LINKS, SERVICES } from "@/lib/constants";
+import {
+  ArrowRight,
+  Briefcase,
+  ChevronDown,
+  FileText,
+  GraduationCap,
+  IdCard,
+  Plane,
+  Users,
+} from "lucide-react";
+import { NAV_LINKS } from "@/lib/constants";
+import type { ServiceSummary } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./MobileMenu";
 import { Logo } from "./Logo";
 
-const SERVICE_ICONS = {
-  "business-permit":  FileText,
+/**
+ * Menu icon per service slug. A service added in the back office that is not
+ * listed here falls back to the generic briefcase rather than crashing on an
+ * undefined component — an editor should never be able to break the header.
+ */
+const SERVICE_ICONS: Record<string, typeof FileText> = {
+  "business-permit": FileText,
   "expatriate-quota": Users,
-  "e-cerpac":         IdCard,
-  "e-visas":          Plane,
-} as const;
+  "e-cerpac": IdCard,
+  "e-visas": Plane,
+  training: GraduationCap,
+};
 
 /**
  * `calendarUrl` arrives as a prop rather than being imported: this is a
  * client component and the value now lives in the CMS, which only the
  * server can read. The layout fetches it once and passes it down.
  */
-export function Navbar({ calendarUrl }: { calendarUrl: string }) {
+export function Navbar({
+  calendarUrl,
+  services,
+}: {
+  calendarUrl: string;
+  services: ServiceSummary[];
+}) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -68,7 +90,7 @@ export function Navbar({ calendarUrl }: { calendarUrl: string }) {
                       <ChevronDown className="h-4 w-4 transition group-hover:rotate-180 group-focus-within:rotate-180" />
                     </Link>
 
-                    <ServicesMegaMenu />
+                    <ServicesMegaMenu services={services} />
                   </div>
                 );
               }
@@ -114,7 +136,12 @@ export function Navbar({ calendarUrl }: { calendarUrl: string }) {
  * focus-within keeps the panel open while focus is anywhere inside it, so
  * tabbing walks through the service links and then out the other side.
  */
-function ServicesMegaMenu() {
+function ServicesMegaMenu({ services }: { services: ServiceSummary[] }) {
+  // Split down the middle so every service appears. This previously took
+  // slice(0,2) and slice(2,4), which silently dropped the fifth service.
+  const half = Math.ceil(services.length / 2);
+  const columns = [services.slice(0, half), services.slice(half)];
+
   return (
     <div
       className="invisible absolute left-1/2 top-full z-50 w-[880px] max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-4 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
@@ -125,7 +152,7 @@ function ServicesMegaMenu() {
         <div className="grid grid-cols-[1fr_1px_1fr]">
           {/* left column */}
           <ul className="p-5">
-            {SERVICES.slice(0, 2).map((service) => (
+            {columns[0].map((service) => (
               <li key={service.slug}>
                 <ServiceCard service={service} />
               </li>
@@ -135,7 +162,7 @@ function ServicesMegaMenu() {
           <div className="bg-grey-100" />
           {/* right column */}
           <ul className="p-5">
-            {SERVICES.slice(2, 4).map((service) => (
+            {columns[1].map((service) => (
               <li key={service.slug}>
                 <ServiceCard service={service} />
               </li>
@@ -160,12 +187,8 @@ function ServicesMegaMenu() {
   );
 }
 
-function ServiceCard({
-  service,
-}: {
-  service: (typeof SERVICES)[number];
-}) {
-  const Icon = SERVICE_ICONS[service.slug as keyof typeof SERVICE_ICONS];
+function ServiceCard({ service }: { service: ServiceSummary }) {
+  const Icon = SERVICE_ICONS[service.slug] ?? Briefcase;
   return (
     <Link
       href={`/services/${service.slug}`}

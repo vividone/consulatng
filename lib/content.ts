@@ -24,6 +24,7 @@ import type {
   Faq,
   Media,
   Post,
+  Service,
   SiteSetting,
   TeamMember,
   Testimonial,
@@ -58,6 +59,77 @@ export function resolveImage(
     alt: media.alt ?? "",
     width: media.width,
     height: media.height,
+  };
+}
+
+/* -------------------------------------------------------------------------
+ * Services
+ * ---------------------------------------------------------------------- */
+
+/**
+ * The slim shape the navigation, footer, sitemap and service cards need.
+ *
+ * Those render on every page, so pulling the full service document — every
+ * cover item, every section, all the rich text — just to print a title in
+ * the nav would be wasteful. `select` keeps the query to the columns used.
+ */
+export type ServiceSummary = {
+  slug: string;
+  title: string;
+  shortTitle: string;
+  summary: string;
+  covers: string[];
+  cardImage: ResolvedImage | null;
+};
+
+export const getServiceSummaries = cache(
+  async (): Promise<ServiceSummary[]> => {
+    const payload = await client();
+    const { docs } = await payload.find({
+      collection: "services",
+      sort: "order",
+      limit: 100,
+      pagination: false,
+      depth: 1,
+    });
+    return docs.map((doc) => ({
+      slug: doc.slug,
+      title: doc.title,
+      shortTitle: doc.shortTitle,
+      summary: doc.summary,
+      covers: (doc.covers ?? []).map((c) => c.label),
+      cardImage: resolveImage(doc.cardImage),
+    }));
+  },
+);
+
+export const getServiceBySlug = cache(
+  async (slug: string): Promise<Service | null> => {
+    const payload = await client();
+    const { docs } = await payload.find({
+      collection: "services",
+      where: { slug: { equals: slug } },
+      limit: 1,
+      pagination: false,
+      depth: 1,
+    });
+    return docs[0] ?? null;
+  },
+);
+
+/**
+ * Previous and next in display order, wrapping at both ends so the pair is
+ * always present — the same behaviour the hardcoded ServiceNav had.
+ */
+export function adjacentServices(
+  services: ServiceSummary[],
+  currentSlug: string,
+): { prev: ServiceSummary; next: ServiceSummary } | null {
+  const i = services.findIndex((s) => s.slug === currentSlug);
+  if (i === -1 || services.length < 2) return null;
+  return {
+    prev: services[(i - 1 + services.length) % services.length],
+    next: services[(i + 1) % services.length],
   };
 }
 

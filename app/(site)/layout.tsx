@@ -6,7 +6,7 @@ import { WhatsAppWidget } from "@/components/shared/WhatsAppWidget";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { PageLoader } from "@/components/shared/PageLoader";
 import { SITE } from "@/lib/constants";
-import { getSiteSettings } from "@/lib/content";
+import { getServiceSummaries, getSiteSettings } from "@/lib/content";
 import "./globals.css";
 
 const inter = Inter({
@@ -63,7 +63,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
+  const [settings, services] = await Promise.all([
+    getSiteSettings(),
+    getServiceSummaries(),
+  ]);
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -103,7 +106,7 @@ export default async function RootLayout({
       <body className="flex min-h-screen flex-col">
         <JsonLd data={organizationSchema} />
         <PageLoader />
-        <Navbar calendarUrl={settings.calendarUrl} />
+        <Navbar calendarUrl={settings.calendarUrl} services={services} />
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppWidget />
