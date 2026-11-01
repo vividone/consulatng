@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
-import { SITE } from "@/lib/constants";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { getSiteSettings } from "@/lib/content";
 
 export const runtime = "nodejs";
+
+/** Submissions allowed per IP per window. A human sends one, maybe two. */
+const MAX_PER_WINDOW = 5;
+const WINDOW_MS = 10 * 60 * 1000;
 
 const schema = z.object({
   fullName: z.string().min(2).max(200),
@@ -13,6 +18,11 @@ const schema = z.object({
   service: z.string().min(1).max(120),
   expatriates: z.string().min(1).max(20),
   message: z.string().max(4000).optional().default(""),
+  /**
+   * Honeypot. Hidden from sighted users and removed from the accessibility
+   * tree, so only a form-filling bot populates it. Any value means discard.
+   */
+  website: z.string().max(200).optional().default(""),
 });
 
 /**
@@ -36,6 +46,17 @@ export async function POST(request: Request) {
     );
   }
 
+  const limit = rateLimit(`contact:${clientIp(request)}`, {
+    max: MAX_PER_WINDOW,
+    windowMs: WINDOW_MS,
+  });
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many enquiries from this connection. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -52,7 +73,18 @@ export async function POST(request: Request) {
   }
 
   const data = parsed.data;
-  const to = process.env.CONTACT_TO ?? SITE.email;
+
+  // Honeypot tripped. Return the success shape rather than an error: telling a
+  // bot which check it failed is free information for whoever wrote it.
+  if (data.website.trim() !== "") {
+    console.warn(`[api/contact] Honeypot tripped by ${clientIp(request)}; discarded.`);
+    return NextResponse.json({ ok: true });
+  }
+
+  // Falls back to whatever inbox the client has set in the back office, so
+  // changing it there is enough and nobody has to remember an env var.
+  const settings = await getSiteSettings();
+  const to = process.env.CONTACT_TO ?? settings.email;
   const from = process.env.CONTACT_FROM ?? "Consulat Website <onboarding@resend.dev>";
 
   const html = renderEmail(data);

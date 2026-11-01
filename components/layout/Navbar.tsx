@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronDown, FileText, IdCard, Plane, Users } from "lucide-react";
-import { NAV_LINKS, SERVICES, CALENDAR_URL } from "@/lib/constants";
+import { NAV_LINKS, SERVICES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./MobileMenu";
@@ -17,7 +17,12 @@ const SERVICE_ICONS = {
   "e-visas":          Plane,
 } as const;
 
-export function Navbar() {
+/**
+ * `calendarUrl` arrives as a prop rather than being imported: this is a
+ * client component and the value now lives in the CMS, which only the
+ * server can read. The layout fetches it once and passes it down.
+ */
+export function Navbar({ calendarUrl }: { calendarUrl: string }) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -60,7 +65,7 @@ export function Navbar() {
                       )}
                     >
                       {link.label}
-                      <ChevronDown className="h-4 w-4 transition group-hover:rotate-180" />
+                      <ChevronDown className="h-4 w-4 transition group-hover:rotate-180 group-focus-within:rotate-180" />
                     </Link>
 
                     <ServicesMegaMenu />
@@ -85,13 +90,13 @@ export function Navbar() {
 
           <div className="hidden lg:block">
             <Button asChild size="sm">
-              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer">
                 Book a Free Consultation
               </a>
             </Button>
           </div>
 
-          <MobileMenu />
+          <MobileMenu calendarUrl={calendarUrl} />
         </div>
       </div>
     </header>
@@ -100,12 +105,19 @@ export function Navbar() {
 
 /**
  * Mega menu for Services — wide 2-column panel centered under the trigger.
- * Visible while the parent .group is hovered (CSS-only).
+ * CSS-only, no state.
+ *
+ * `invisible` is load-bearing for accessibility, not just for looks:
+ * visibility:hidden takes the links out of the tab order, so without the
+ * `group-focus-within` variants below a keyboard user could tab to "Services"
+ * and never reach the panel — it would stay shut with no way to open it.
+ * focus-within keeps the panel open while focus is anywhere inside it, so
+ * tabbing walks through the service links and then out the other side.
  */
 function ServicesMegaMenu() {
   return (
     <div
-      className="invisible absolute left-1/2 top-full z-50 w-[880px] max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-4 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100"
+      className="invisible absolute left-1/2 top-full z-50 w-[880px] max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-4 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
       role="region"
       aria-label="Services menu"
     >

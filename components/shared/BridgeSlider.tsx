@@ -28,6 +28,8 @@ export function BridgeSlider({
   overlayText,
 }: Props) {
   const [active, setActive] = useState(0);
+  /** Which slides have been mounted. Grows as the carousel advances. */
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0, 1]));
 
   // Auto-rotate continuously. The only reason it would stop is if the user
   // has prefers-reduced-motion enabled (accessibility) or the consumer
@@ -42,27 +44,48 @@ export function BridgeSlider({
     return () => window.clearInterval(id);
   }, [images.length, intervalMs]);
 
+  // Keep the next slide mounted so it has decoded before it fades in.
+  useEffect(() => {
+    const next = (active + 1) % images.length;
+    setLoaded((prev) => {
+      if (prev.has(active) && prev.has(next)) return prev;
+      const updated = new Set(prev);
+      updated.add(active);
+      updated.add(next);
+      return updated;
+    });
+  }, [active, images.length]);
+
   if (images.length === 0) return null;
 
   return (
     <div className="relative -mt-10 sm:-mt-16 lg:-mt-20">
       <div className="container-prose">
         <div className="relative aspect-[16/9] overflow-hidden rounded-3xl shadow-2xl shadow-primary/30 ring-1 ring-white/10 sm:aspect-[16/7]">
-          {/* Crossfading images */}
-          {images.map((src, i) => (
-            <Image
-              key={src}
-              src={src}
-              alt=""
-              fill
-              priority={i === 0}
-              sizes="(max-width: 1024px) 100vw, 1280px"
-              className={cn(
-                "object-cover transition-opacity duration-1000 ease-out",
-                i === active ? "opacity-100" : "opacity-0"
-              )}
-            />
-          ))}
+          {/*
+            Crossfading images. All slides occupy the same box, so they are
+            all technically "in view" and next/image's lazy loading does
+            nothing for them — left alone, the page downloads every slide at
+            full width on load. Only the first slide and the one after it are
+            mounted up front; the rest mount once the carousel has advanced
+            far enough to need them.
+          */}
+          {images.map((src, i) =>
+            loaded.has(i) ? (
+              <Image
+                key={src}
+                src={src}
+                alt=""
+                fill
+                priority={i === 0}
+                sizes="(max-width: 1024px) 100vw, 1280px"
+                className={cn(
+                  "object-cover transition-opacity duration-1000 ease-out",
+                  i === active ? "opacity-100" : "opacity-0"
+                )}
+              />
+            ) : null
+          )}
 
           {/* Legibility gradient for the overlay text */}
           <div

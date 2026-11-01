@@ -52,12 +52,16 @@ export function Reveal({
       return;
     }
 
+    // Tracked out here, not returned from the observer callback: a value
+    // returned from that callback is discarded, so the previous version's
+    // cleanup never ran and the timer could fire after unmount.
+    let timer: number | undefined;
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          const id = window.setTimeout(() => setShown(true), delay);
+          timer = window.setTimeout(() => setShown(true), delay);
           if (once) obs.disconnect();
-          return () => window.clearTimeout(id);
         } else if (!once) {
           setShown(false);
         }
@@ -66,7 +70,10 @@ export function Reveal({
     );
 
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, [delay, threshold, once]);
 
   return (

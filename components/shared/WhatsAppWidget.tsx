@@ -1,9 +1,12 @@
-import { SITE } from "@/lib/constants";
+import { getSiteSettings, whatsapp } from "@/lib/content";
 
-export function WhatsAppWidget() {
+export async function WhatsAppWidget() {
+  const settings = await getSiteSettings();
+  const wa = whatsapp(settings);
+
   return (
     <a
-      href={SITE.whatsappHref}
+      href={wa.href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Consulat on WhatsApp"

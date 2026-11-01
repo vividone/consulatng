@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Mail, MapPin, MessageCircle, Phone, Clock, Calendar } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/metadata";
-import { SITE, CALENDAR_URL } from "@/lib/constants";
+import { getSiteSettings, whatsapp } from "@/lib/content";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact Consulat — Book an Immigration Consultation",
@@ -15,7 +14,10 @@ export const metadata: Metadata = buildMetadata({
   keywords: ["contact consulat", "immigration consultant Lagos", "book consultation Nigeria"],
 });
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+  const wa = whatsapp(settings);
+
   return (
     <>
       <PageHero
@@ -44,9 +46,9 @@ export default function ContactPage() {
                     Office Address
                   </p>
                   <p className="mt-1 text-grey-900">
-                    {SITE.address.streetAddress}
+                    {settings.streetAddress}
                     <br />
-                    {SITE.address.addressLocality}, Nigeria
+                    {settings.addressLocality}, Nigeria
                   </p>
                 </div>
               </li>
@@ -58,11 +60,11 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold uppercase tracking-wider text-grey-500">
                     Phone
                   </p>
-                  <a href={SITE.phoneHref} className="mt-1 block text-grey-900 hover:text-accent">
-                    {SITE.phone}
+                  <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="mt-1 block text-grey-900 hover:text-accent">
+                    {settings.phone}
                   </a>
-                  <a href={SITE.phone2Href} className="mt-1 block text-grey-900 hover:text-accent">
-                    {SITE.phone2}
+                  <a href={`tel:${(settings.phoneSecondary ?? "").replace(/\s/g, "")}`} className="mt-1 block text-grey-900 hover:text-accent">
+                    {settings.phoneSecondary}
                   </a>
                 </div>
               </li>
@@ -75,10 +77,10 @@ export default function ContactPage() {
                     Email
                   </p>
                   <a
-                    href={`mailto:${SITE.email}`}
+                    href={`mailto:${settings.email}`}
                     className="mt-1 block text-grey-900 hover:text-accent"
                   >
-                    {SITE.email}
+                    {settings.email}
                   </a>
                 </div>
               </li>
@@ -91,12 +93,12 @@ export default function ContactPage() {
                     WhatsApp
                   </p>
                   <a
-                    href={SITE.whatsappHref}
+                    href={wa.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-1 block text-grey-900 hover:text-accent"
                   >
-                    {SITE.whatsapp} <span className="text-grey-500">· Click to chat</span>
+                    {wa.display} <span className="text-grey-500">· Click to chat</span>
                   </a>
                 </div>
               </li>
@@ -108,7 +110,7 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold uppercase tracking-wider text-grey-500">
                     Office Hours
                   </p>
-                  <p className="mt-1 text-grey-900">{SITE.hours}</p>
+                  <p className="mt-1 text-grey-900">{settings.hours}</p>
                 </div>
               </li>
             </ul>
@@ -124,7 +126,7 @@ export default function ContactPage() {
                 Schedule a 30-minute call at a time that works for you.
               </p>
               <Button asChild variant="secondary" size="sm" className="mt-4">
-                <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+                <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
                   Book a Call →
                 </a>
               </Button>
@@ -159,7 +161,7 @@ export default function ContactPage() {
             <iframe
               title="Consulat office map"
               src={`https://www.google.com/maps?q=${encodeURIComponent(
-                `${SITE.address.streetAddress}, ${SITE.address.addressLocality}, ${SITE.address.addressRegion}, Nigeria`
+                `${settings.streetAddress}, ${settings.addressLocality}, ${settings.addressRegion}, Nigeria`
               )}&output=embed`}
               className="h-full w-full"
               loading="lazy"

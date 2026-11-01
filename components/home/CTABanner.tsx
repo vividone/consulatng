@@ -1,17 +1,19 @@
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/Reveal";
-import { SITE, CALENDAR_URL } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/content";
 
 type CTABannerProps = {
   heading?: string;
   subtext?: string;
 };
 
-export function CTABanner({
+export async function CTABanner({
   heading = "Ready to simplify your immigration process in Nigeria?",
   subtext = "Speak with our team to discuss your requirements. \n We respond within 24 hours.",
 }: CTABannerProps) {
+  const settings = await getSiteSettings();
+
   return (
     <section className="bg-primary-dark text-white">
       <div className="container-prose flex flex-col items-start gap-8 py-14 sm:py-20 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
@@ -23,13 +25,13 @@ export function CTABanner({
         </Reveal>
         <Reveal delay={120} className="flex flex-col gap-3 sm:flex-row lg:shrink-0">
           <Button asChild size="lg">
-            <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+            <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
               Book a Free Consultation
             </a>
           </Button>
           <Button asChild variant="white" size="lg">
-            <a href={SITE.phoneHref}>
-              <Phone className="h-4 w-4" /> {SITE.phone}
+            <a href={`tel:${settings.phone.replace(/\s/g, "")}`}>
+              <Phone className="h-4 w-4" /> {settings.phone}
             </a>
           </Button>
         </Reveal>

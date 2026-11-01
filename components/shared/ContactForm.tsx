@@ -26,6 +26,8 @@ const schema = z.object({
   service: z.string().min(1, "Please select a service"),
   expatriates: z.string().min(1, "Please select a range"),
   message: z.string().optional(),
+  /** Honeypot — see app/api/contact/route.ts. Always empty for real users. */
+  website: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -117,6 +119,7 @@ export function ContactForm() {
           service: values.service,
           expatriates: values.expatriates,
           message: values.message ?? "",
+          website: values.website ?? "",
         }),
       });
       if (!res.ok) {
@@ -169,12 +172,32 @@ export function ContactForm() {
           )}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="companyName">Company Name</Label>
+          <Label htmlFor="companyName">Company Name *</Label>
           <Input id="companyName" placeholder="Acme Inc." {...register("companyName")} />
           {errors.companyName && (
             <p className="text-sm text-red-600">{errors.companyName.message}</p>
           )}
         </div>
+      </div>
+
+      {/*
+        Honeypot. Hidden with an off-screen wrapper rather than `display: none`
+        — some bots skip fields that are display:none, but fill this one.
+        aria-hidden + tabIndex keep it away from screen readers and the tab
+        order, and autoComplete="off" stops a browser filling it for a human.
+      */}
+      <div
+        aria-hidden
+        className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="website">Leave this field empty</label>
+        <input
+          id="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("website")}
+        />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

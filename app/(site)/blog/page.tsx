@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
 import { CTABanner } from "@/components/home/CTABanner";
-import { getAllPosts, formatDate } from "@/lib/blog";
+import { formatDate, getPosts, readingTime, resolveImage } from "@/lib/content";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
@@ -16,7 +17,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function BlogIndexPage() {
-  const posts = await getAllPosts();
+  const posts = await getPosts();
 
   return (
     <>
@@ -46,14 +47,14 @@ export default async function BlogIndexPage() {
                     href={`/blog/${post.slug}`}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border border-grey-200 bg-white transition hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl"
                   >
-                    <div className="aspect-[16/10] w-full bg-gradient-to-br from-primary via-primary-light to-accent" />
+                    <BlogCardImage post={post} />
                     <div className="flex flex-1 flex-col p-7">
                       <div className="flex items-center gap-4 text-xs text-grey-500">
                         <span className="inline-flex items-center gap-1.5">
-                          <Calendar className="h-3.5 w-3.5" /> {formatDate(post.date)}
+                          <Calendar className="h-3.5 w-3.5" /> {formatDate(post.publishedAt ?? post.createdAt)}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                          <Clock className="h-3.5 w-3.5" /> {post.readingTime} min read
+                          <Clock className="h-3.5 w-3.5" /> {readingTime(post.content)} min read
                         </span>
                       </div>
                       <h2 className="mt-4 font-display text-xl font-bold leading-snug text-grey-900 group-hover:text-accent">
@@ -77,5 +78,30 @@ export default async function BlogIndexPage() {
 
       <CTABanner />
     </>
+  );
+}
+
+/**
+ * Cover image, falling back to the brand gradient. Three of the seeded posts
+ * have no cover because the MDX files referenced images that were never
+ * committed, so the fallback is the common case today rather than an edge.
+ */
+function BlogCardImage({ post }: { post: Awaited<ReturnType<typeof getPosts>>[number] }) {
+  const cover = resolveImage(post.coverImage);
+  if (!cover) {
+    return (
+      <div className="aspect-[16/10] w-full bg-gradient-to-br from-primary via-primary-light to-accent" />
+    );
+  }
+  return (
+    <div className="relative aspect-[16/10] w-full overflow-hidden">
+      <Image
+        src={cover.url}
+        alt={cover.alt}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+      />
+    </div>
   );
 }

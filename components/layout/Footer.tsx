@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { Linkedin, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/content";
 import { Logo } from "./Logo";
 import { WorldMap } from "@/components/shared/WorldMap";
 
-export function Footer() {
+export async function Footer() {
+  const settings = await getSiteSettings();
+
   return (
     <footer className="relative overflow-hidden bg-primary-dark text-grey-200">
       {/* Decorative world map — fills the footer at very low opacity */}
@@ -21,7 +24,7 @@ export function Footer() {
             </p>
             <div className="mt-6 flex gap-3">
               <a
-                href={SITE.social.linkedin}
+                href={settings.linkedin ?? "#"}
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -30,7 +33,7 @@ export function Footer() {
                 <Linkedin className="h-4 w-4" />
               </a>
               <a
-                href={SITE.social.twitter}
+                href={settings.twitter ?? "#"}
                 aria-label="X / Twitter"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -39,7 +42,7 @@ export function Footer() {
                 <Twitter className="h-4 w-4" />
               </a>
               <a
-                href={SITE.social.instagram}
+                href={settings.instagram ?? "#"}
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -97,16 +100,20 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-grey-300">
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <span>Lagos, Nigeria</span>
+                <span>
+                  {settings.addressLocality}, Nigeria
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href={SITE.phoneHref} className="hover:text-white">{SITE.phone}</a>
+                <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="hover:text-white">
+                  {settings.phone}
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href={`mailto:${SITE.email}`} className="hover:text-white">
-                  {SITE.email}
+                <a href={`mailto:${settings.email}`} className="hover:text-white">
+                  {settings.email}
                 </a>
               </li>
             </ul>
@@ -114,7 +121,13 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 text-sm text-grey-300 sm:flex-row sm:items-center">
-          <p>&copy; {new Date().getFullYear()} {SITE.legalName} All rights reserved.</p>
+          {/*
+            Deliberately no year. Every page here is statically prerendered,
+            so `new Date()` would evaluate at build time and the footer would
+            claim the wrong year from 1 January until the next deploy. A
+            copyright notice does not need one to be effective.
+          */}
+          <p>&copy; {SITE.legalName} All rights reserved.</p>
           <p className="text-grey-300">
             <Link href="/privacy" className="hover:text-white">Privacy</Link>
             <span className="mx-2 text-grey-300">·</span>

@@ -1,5 +1,14 @@
 # Adding a CMS to a Static Next.js Site — Playbook
 
+> **Superseded for consulatng.net as of 2026-10-07.** The WordPress
+> integration this document describes was removed from the site: `lib/wp.ts`,
+> `app/api/revalidate/` and `wordpress/consulat-headless/` are gone, and blog
+> posts and FAQs are read from `content/blog/*.mdx` and `lib/faqs.ts` again.
+> Content management moves to the operations platform instead. The document is
+> kept because the decision framework in §1 and the revalidation design in §7.5
+> are still the reference for that work — but it no longer describes this
+> repository.
+
 A working reference for retrofitting editable content onto a statically
 generated Next.js marketing site, the way we scoped it for
 **consulatng.net**. Written to be portable — the decision framework in

@@ -1,27 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Branded splash loader.
+ * Branded splash loader, shown once on first load.
  *
- * - Shows on initial mount and animates out after ~900ms
- * - Re-triggers briefly on pathname changes so navigation feels considered
- * - Respects prefers-reduced-motion (still appears, but no animation)
+ * It used to re-arm on every pathname change. That added roughly 1.1s to
+ * every in-site navigation on a statically generated, prefetched site where
+ * the next page would otherwise paint more or less instantly — a deliberate
+ * delay, dressed as a loading state. It now runs on mount only, so route
+ * changes are as fast as the build makes them.
+ *
+ * Respects prefers-reduced-motion: still appears, but briefly and without
+ * the pulse.
  */
 export function PageLoader() {
-  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    // Each pathname change re-arms the loader briefly
-    setVisible(true);
-    setFading(false);
-
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const showFor = reduced ? 200 : 700;
     const fadeFor = 400;
@@ -33,7 +32,7 @@ export function PageLoader() {
       window.clearTimeout(fadeId);
       window.clearTimeout(hideId);
     };
-  }, [pathname]);
+  }, []);
 
   if (!visible) return null;
 
@@ -49,7 +48,10 @@ export function PageLoader() {
       {/* Subtle radial vignette for depth */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,theme(colors.primary-light/0.35),transparent_70%)]"
+        // `colors.primary-light` is not a valid theme path — the colour is
+        // nested as primary.light — so Tailwind silently dropped this utility
+        // and the vignette never rendered.
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,theme(colors.primary.light/0.35),transparent_70%)]"
       />
 
       <div className="relative flex flex-col items-center gap-5">

@@ -1,32 +1,22 @@
+/**
+ * Structural identity only.
+ *
+ * Everything an editor should be able to change — tagline, description,
+ * contact details, hours, address, social links, the booking URL — lives in
+ * the Site Settings global in the back office and is read through
+ * lib/content.ts. What stays here is what is wired into routing and
+ * canonical URLs, where an editor typo would break the site rather than
+ * change its wording.
+ */
 export const SITE = {
   name: "Consulat",
   legalName: "Consulat Ltd.",
+  // Brand identity, not editorial copy: it is set in the logo lockup, the
+  // social card and the page eyebrow. A CMS field that changed one of those
+  // three and not the others would be worse than no field at all.
   tagline: "Immigration Simplified",
   domain: "consulatng.net",
   url: "https://consulatng.net",
-  description:
-    "Expert immigration consulting for multinationals and expatriates in Nigeria. Business permits, expatriate quotas, visas, and e-CERPAC services.",
-  email: "info@consulatng.net",
-  phone: "+2348141657981",
-  phoneHref: "tel:+2348141657981",
-  phone2: "+2348026442090",
-  phone2Href: "tel:+2348026442090",
-  altphone: "02013438504",
-  whatsapp: "+234 814657981",
-  whatsappHref:
-    "https://wa.me/2348141657981?text=Hello%20Consulat%2C%20I%20would%20like%20to%20enquire%20about%20your%20immigration%20services.",
-  address: {
-    streetAddress: "H1 Garwood Court, Sule Olusesi Road, Off Lekki Conservation Center Road, Chevron",
-    addressLocality: "Lekki",
-    addressRegion: "Lagos",
-    addressCountry: "NG",
-  },
-  hours: "Monday – Friday: 8:00 AM – 5:00 PM (WAT)",
-  social: {
-    linkedin: "https://www.linkedin.com/company/consulat",
-    twitter: "https://twitter.com/consulatng",
-    instagram: "https://instagram.com/consulatng",
-  },
 } as const;
 
 /**

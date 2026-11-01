@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
-import { getFaqs } from "@/lib/faqs";
+import { getFaqs } from "@/lib/content";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
@@ -28,8 +28,8 @@ export default async function FAQPage() {
     "@type": "FAQPage",
     mainEntity: faqs.map((f) => ({
       "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
     })),
   };
 
@@ -47,9 +47,9 @@ export default async function FAQPage() {
           <Reveal>
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, i) => (
-                <AccordionItem key={faq.q} value={`item-${i}`}>
-                  <AccordionTrigger>{faq.q}</AccordionTrigger>
-                  <AccordionContent>{faq.a}</AccordionContent>
+                <AccordionItem key={faq.id} value={`item-${i}`}>
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent>{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

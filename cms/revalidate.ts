@@ -1,0 +1,110 @@
+import { revalidatePath } from "next/cache";
+import type {
+  CollectionAfterChangeHook,
+  CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
+} from "payload";
+
+/**
+ * On-demand revalidation.
+ *
+ * Every public page is statically generated, so without this a publish in the
+ * back office changes nothing on the live site until the next deploy — and
+ * Google goes on indexing the old copy. This is the same requirement the
+ * WordPress integration solved with a webhook; here Payload runs inside the
+ * same Next process, so it is a direct function call with no shared secret
+ * and no network hop.
+ *
+ * Paths are listed explicitly rather than revalidating everything. A blanket
+ * purge on every keystroke of an autosaved draft would throw away the whole
+ * static cache several times a minute.
+ */
+
+/** Pages that render a given collection. Keep in step with lib/content.ts. */
+const PATHS = {
+  faqs: ["/faq"],
+  testimonials: ["/"],
+  "client-logos": ["/"],
+  "team-members": ["/about"],
+  // Settings feed the footer and the organisation schema, which are on
+  // every page — hence the layout, which covers all of them at once.
+  settings: ["/", "/about", "/services", "/faq", "/contact", "/blog"],
+} as const;
+
+/**
+ * `revalidatePath` only works inside a Next request or render context. Payload
+ * writes also happen well outside one — the content seed, migration scripts,
+ * scheduled jobs — and there it throws "static generation store missing".
+ *
+ * Those callers are not serving a cache that needs purging, so swallowing it
+ * is correct rather than merely convenient. Anything else is logged: a
+ * revalidation that fails silently during a real publish is the exact bug
+ * this module exists to prevent.
+ */
+function purge(paths: readonly string[]) {
+  for (const path of paths) {
+    try {
+      revalidatePath(path);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (message.includes("static generation store")) continue;
+      console.error(`[revalidate] Failed to purge ${path}:`, message);
+    }
+  }
+}
+
+export function revalidateCollection(
+  key: keyof typeof PATHS,
+): CollectionAfterChangeHook {
+  return ({ doc, req }) => {
+    // Autosave fires afterChange constantly while someone types. Only a
+    // published document is on the public site, so only that needs a purge.
+    if (req.context?.skipRevalidation) return doc;
+    purge(PATHS[key]);
+    return doc;
+  };
+}
+
+export function revalidateCollectionOnDelete(
+  key: keyof typeof PATHS,
+): CollectionAfterDeleteHook {
+  return ({ doc }) => {
+    purge(PATHS[key]);
+    return doc;
+  };
+}
+
+export const revalidateSettings: GlobalAfterChangeHook = ({ doc }) => {
+  purge(PATHS.settings);
+  return doc;
+};
+
+/**
+ * Posts need the index and their own page, and the sitemap entry that lists
+ * them. A slug change has to purge the old path too, or the previous URL
+ * keeps serving a page the CMS no longer knows about.
+ */
+export const revalidatePost: CollectionAfterChangeHook = ({
+  doc,
+  previousDoc,
+}) => {
+  if (doc._status === "published") {
+    purge(["/blog", `/blog/${doc.slug}`, "/sitemap.xml"]);
+  }
+
+  // Unpublished, or renamed: the old URL must stop serving.
+  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
+    purge([`/blog/${previousDoc.slug}`]);
+  }
+  if (previousDoc?._status === "published" && doc._status !== "published") {
+    purge(["/blog", `/blog/${doc.slug}`, "/sitemap.xml"]);
+  }
+
+  return doc;
+};
+
+export const revalidatePostOnDelete: CollectionAfterDeleteHook = ({ doc }) => {
+  purge(["/blog", "/sitemap.xml"]);
+  if (doc?.slug) purge([`/blog/${doc.slug}`]);
+  return doc;
+};

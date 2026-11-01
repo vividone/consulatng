@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, CALENDAR_URL } from "@/lib/constants";
+import { NAV_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 
-export function MobileMenu() {
+export function MobileMenu({ calendarUrl }: { calendarUrl: string }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -90,7 +90,7 @@ export function MobileMenu() {
         <div className="mt-8">
           <Button asChild className="w-full">
             <a
-              href={CALENDAR_URL}
+              href={calendarUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}

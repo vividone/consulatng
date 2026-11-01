@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CALENDAR_URL } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/content";
 
 type Props = {
   heading: string;
   body: string;
 };
 
-export function ServiceCTA({ heading, body }: Props) {
+export async function ServiceCTA({ heading, body }: Props) {
+  const settings = await getSiteSettings();
+
   return (
     <section className="bg-grey-50 py-14 sm:py-20">
       <div className="container-prose">
@@ -18,7 +20,7 @@ export function ServiceCTA({ heading, body }: Props) {
           <p className="mx-auto mt-3 max-w-xl text-grey-700">{body}</p>
           <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-7 sm:flex-row sm:items-center">
             <Button asChild>
-              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+              <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
                 Book a Free Consultation
               </a>
             </Button>

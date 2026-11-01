@@ -5,51 +5,13 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Reveal } from "@/components/shared/Reveal";
 import { cn } from "@/lib/utils";
+import type { Testimonial } from "@/cms/payload-types";
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "Consulat handled our entire team's e-CERPAC and quota renewals seamlessly. Their proactive monitoring meant we never had a single expiry surprise.",
-    name: "Ajit",
-    role: "Petroleum Engineer",
-    country: "India",
-    flag: "🇮🇳",
-  },
-  {
-    quote:
-      "When we expanded operations into Lagos, Consulat became our go-to immigration partner. The team is responsive, meticulous, and deeply knowledgeable.",
-    name: "Yoann",
-    role: "Operations Director Africa",
-    country: "France",
-    flag: "🇫🇷",
-  },
-  {
-    quote:
-      "From visa-on-arrival to long-term residence permits, Consulat has supported our entire expatriate workforce in Nigeria. We couldn't recommend them more.",
-    name: "Sanne",
-    role: "Agrifoods Strategist",
-    country: "Netherlands",
-    flag: "🇳🇱",
-  },
-  {
-    quote:
-      "Consulat is simply the most reliable immigration partner we've worked with in West Africa. Their team combines deep local expertise with a level of professionalism that builds long-term trust.",
-    name: "David",
-    role: "Legal Counsel",
-    country: "Canada",
-    flag: "🇨🇦",
-  },
-  {
-    quote:
-      "From our first work permit renewal to navigating the complexities of a Golden Visa, the Consulat team has been an invaluable guide. Highly recommended.",
-    name: "Elena",
-    role: "COO",
-    country: "Italy",
-    flag: "🇮🇹",
-  },
-];
 
-export function Testimonials() {
+type Props = { testimonials: Testimonial[] };
+
+/** Data comes from the CMS via the server component that renders this. */
+export function Testimonials({ testimonials }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -120,9 +82,9 @@ export function Testimonials() {
             ref={scrollerRef}
             className="mt-10 -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
           >
-            {TESTIMONIALS.map((t) => (
+            {testimonials.map((t) => (
               <figure
-                key={t.name}
+                key={t.id}
                 data-testimonial
                 className="flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-grey-200 bg-white p-8 shadow-sm sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
               >
@@ -132,7 +94,7 @@ export function Testimonials() {
                 </blockquote>
                 <figcaption className="mt-6 border-t border-grey-200 pt-4">
                   <p className="font-display text-base font-bold text-grey-900">
-                    {t.name}
+                    {t.personName}
                   </p>
                   <p className="mt-0.5 text-sm text-grey-500">
                     {t.role} · <span aria-hidden>{t.flag}</span> {t.country}

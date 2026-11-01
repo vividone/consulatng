@@ -8,6 +8,7 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CTABanner } from "@/components/home/CTABanner";
 import { buildMetadata } from "@/lib/metadata";
+import { getClientLogos, getTestimonials } from "@/lib/content";
 
 export const metadata: Metadata = buildMetadata({
   title: "Consulat — Immigration & Work Permit Services in Nigeria",
@@ -23,16 +24,23 @@ export const metadata: Metadata = buildMetadata({
   ],
 });
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetched in parallel: neither depends on the other, and a home-page
+  // build should not pay for two sequential round trips.
+  const [testimonials, clients] = await Promise.all([
+    getTestimonials(),
+    getClientLogos(),
+  ]);
+
   return (
     <>
       <Hero />
       <WelcomeSection />
       <ServicesOverview />
-      <TrustBar />
+      <TrustBar clients={clients} />
       <WhyConsulat />
       <HowItWorks />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <CTABanner />
     </>
   );

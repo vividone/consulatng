@@ -1,22 +1,20 @@
 import Link from "next/link";
-import { ArrowRight, FileCheck2, IdCard, Plane, Stamp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FlagMarquee } from "./FlagMarquee";
 import { CountUpStat } from "./CountUpStat";
 import { WorldMap } from "@/components/shared/WorldMap";
-import { SITE, CALENDAR_URL } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/content";
 
 const HERO_TITLE =
   "Your trusted partner for immigration & work permits in Nigeria";
 
 /**
  * Hero entrance timing. All animations are CSS-driven.
- *  - The tagline eyebrow rises first.
  *  - The H1 reveals word-by-word with a stagger, then a continuous gradient
  *    shimmer flows across the heading.
  *  - Subtitle, CTAs and stats fade-up sequentially.
  */
-const EYEBROW_DELAY_MS = 150;
 const TITLE_BASE_DELAY_MS = 280;
 const TITLE_STAGGER_MS = 80;
 const SUBTITLE_DELAY_MS = 350;
@@ -32,7 +30,9 @@ const HERO_TITLE_WORDS = HERO_TITLE.split(" ");
  */
 const HERO_BREAK_AFTER = 3;
 
-export function Hero() {
+export async function Hero() {
+  const settings = await getSiteSettings();
+
   return (
     <section className="relative overflow-hidden bg-primary-dark text-white">
       {/* Base gradient */}
@@ -66,18 +66,9 @@ export function Hero() {
       {/* Subtle drifting dot grid */}
       <div aria-hidden className="hero-grid pointer-events-none absolute inset-0 opacity-40" />
 
-      {/* Floating decorative chips */}
-      {/* <FloatingChips /> */}
-
       {/* Hero copy — centered */}
       <div className="container-prose relative py-16 sm:py-18 lg:py-24 xl:py-35">
         <div className="mx-auto max-w-4xl text-center">
-          {/* <p
-            className="hero-rise mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-accent sm:mb-5 sm:text-sm"
-            style={{ animationDelay: `${EYEBROW_DELAY_MS}ms` }}
-          >
-            {SITE.tagline}
-          </p> */}
           {/* Animated H1: each word fades + rises with a stagger, and a
               continuous gradient shimmer flows across the heading. */}
           <h1 className="hero-title font-display text-[1.65rem] font-extrabold leading-[1.25] tracking-tight pb-2 sm:pb-3 sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -128,7 +119,7 @@ export function Hero() {
               </Link>
             </Button>
             <Button asChild variant="white" size="lg">
-              <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+              <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
                 Book a Free Consultation
               </a>
             </Button>
@@ -147,61 +138,5 @@ export function Hero() {
         <FlagMarquee />
       </div>
     </section>
-  );
-}
-
-/** Subtle floating icon "chips" — visual depth, hidden on small screens. */
-function FloatingChips() {
-  const chips: Array<{
-    icon: React.ComponentType<{ className?: string }>;
-    label: string;
-    className: string;
-    floatClass: string;
-  }> = [
-    {
-      icon: Plane,
-      label: "e-Visa",
-      className: "left-[6%] top-[18%]",
-      floatClass: "hero-chip-float-1",
-    },
-    {
-      icon: IdCard,
-      label: "e-CERPAC",
-      className: "right-[8%] top-[14%]",
-      floatClass: "hero-chip-float-2",
-    },
-    {
-      icon: Stamp,
-      label: "Approved",
-      className: "left-[10%] bottom-[22%]",
-      floatClass: "hero-chip-float-3",
-    },
-    {
-      icon: FileCheck2,
-      label: "Work Permit",
-      className: "right-[6%] bottom-[26%]",
-      floatClass: "hero-chip-float-4",
-    },
-  ];
-
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
-      {chips.map((chip) => {
-        const Icon = chip.icon;
-        return (
-          <div
-            key={chip.label}
-            className={`hero-chip ${chip.floatClass} ${chip.className}`}
-          >
-            <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 shadow-xl backdrop-blur-md">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/30 text-white">
-                <Icon className="h-4 w-4" />
-              </span>
-              <span className="text-sm font-semibold text-white">{chip.label}</span>
-            </div>
-          </div>
-        );
-      })}
-    </div>
   );
 }

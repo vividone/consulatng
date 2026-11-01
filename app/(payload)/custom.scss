@@ -1,0 +1,11 @@
+/* Admin theming. Consulat's primary blue, so the admin does not look like a
+   generic Payload install to the client. */
+@layer payload-default {
+  :root {
+    --theme-elevation-0: #ffffff;
+  }
+  html[data-theme="light"] {
+    --color-base-800: #0829a5;
+    --theme-success-500: #3b82f6;
+  }
+}
