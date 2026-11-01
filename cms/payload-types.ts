@@ -100,9 +100,11 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'home-page': HomePage;
     'site-settings': SiteSetting;
   };
   globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
@@ -265,6 +267,26 @@ export interface Service {
       }[]
     | null;
   /**
+   * Shown beside this service in the header's Services menu.
+   */
+  menuIcon:
+    | 'briefcase'
+    | 'file-text'
+    | 'id-card'
+    | 'plane'
+    | 'graduation-cap'
+    | 'users'
+    | 'globe'
+    | 'clipboard-check'
+    | 'bell'
+    | 'user-check'
+    | 'shield'
+    | 'clock'
+    | 'ear'
+    | 'sparkles'
+    | 'handshake'
+    | 'building';
+  /**
    * Photo on the service card. Without one the card falls back to the brand gradient.
    */
   cardImage?: (number | null) | Media;
@@ -324,7 +346,23 @@ export interface Service {
         /**
          * Icons are a fixed list because each maps to a drawing that ships with the site.
          */
-        icon: 'ear' | 'sparkles' | 'handshake' | 'shield' | 'clock' | 'users';
+        icon:
+          | 'briefcase'
+          | 'file-text'
+          | 'id-card'
+          | 'plane'
+          | 'graduation-cap'
+          | 'users'
+          | 'globe'
+          | 'clipboard-check'
+          | 'bell'
+          | 'user-check'
+          | 'shield'
+          | 'clock'
+          | 'ear'
+          | 'sparkles'
+          | 'handshake'
+          | 'building';
         title: string;
         body: string;
         id?: string | null;
@@ -650,6 +688,7 @@ export interface ServicesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  menuIcon?: T;
   cardImage?: T;
   heroEyebrow?: T;
   heroTitle?: T;
@@ -888,6 +927,104 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Everything on the home page except the testimonials, client logos and service cards, which come from their own collections.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  /**
+   * The main headline. It animates in word by word and wraps automatically.
+   */
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * Links to /services.
+   */
+  heroPrimaryCta: string;
+  /**
+   * Links to the booking URL in Site Settings.
+   */
+  heroSecondaryCta: string;
+  /**
+   * The three counters beneath the buttons. They count up from zero when the page loads.
+   */
+  stats?:
+    | {
+        value: number;
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  welcomeHeading: string;
+  welcomeBody: string;
+  welcomeCtaLabel: string;
+  /**
+   * Decorative illustration, shown on large screens only. Hidden from screen readers.
+   */
+  welcomeImage?: (number | null) | Media;
+  servicesEyebrow: string;
+  servicesTitle: string;
+  servicesIntro: string;
+  /**
+   * The small caption above the scrolling client logos.
+   */
+  trustBarHeading: string;
+  whyEyebrow: string;
+  whyTitle: string;
+  /**
+   * Shown in a single row of four on large screens, so four reads best.
+   */
+  pillars?:
+    | {
+        icon:
+          | 'briefcase'
+          | 'file-text'
+          | 'id-card'
+          | 'plane'
+          | 'graduation-cap'
+          | 'users'
+          | 'globe'
+          | 'clipboard-check'
+          | 'bell'
+          | 'user-check'
+          | 'shield'
+          | 'clock'
+          | 'ear'
+          | 'sparkles'
+          | 'handshake'
+          | 'building';
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  processEyebrow: string;
+  processTitle: string;
+  /**
+   * Numbered automatically in order. Four fit the row on large screens.
+   */
+  steps?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  seoTitle: string;
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
@@ -921,11 +1058,76 @@ export interface SiteSetting {
    * ISO country code, used in structured data.
    */
   addressCountry: string;
+  ctaHeading: string;
+  /**
+   * A line break in this field renders as a line break on the page.
+   */
+  ctaBody: string;
+  /**
+   * Links to the booking URL above.
+   */
+  ctaButtonLabel: string;
   linkedin?: string | null;
   twitter?: string | null;
   instagram?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  heroTitle?: T;
+  heroSubtitle?: T;
+  heroPrimaryCta?: T;
+  heroSecondaryCta?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  welcomeHeading?: T;
+  welcomeBody?: T;
+  welcomeCtaLabel?: T;
+  welcomeImage?: T;
+  servicesEyebrow?: T;
+  servicesTitle?: T;
+  servicesIntro?: T;
+  trustBarHeading?: T;
+  whyEyebrow?: T;
+  whyTitle?: T;
+  pillars?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  processEyebrow?: T;
+  processTitle?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -945,6 +1147,9 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   addressLocality?: T;
   addressRegion?: T;
   addressCountry?: T;
+  ctaHeading?: T;
+  ctaBody?: T;
+  ctaButtonLabel?: T;
   linkedin?: T;
   twitter?: T;
   instagram?: T;

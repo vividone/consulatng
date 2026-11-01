@@ -3,35 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import {
-  ArrowRight,
-  Briefcase,
-  ChevronDown,
-  FileText,
-  GraduationCap,
-  IdCard,
-  Plane,
-  Users,
-} from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
 import type { ServiceSummary } from "@/lib/content";
+import { iconFor } from "@/components/shared/icons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "./MobileMenu";
 import { Logo } from "./Logo";
 
-/**
- * Menu icon per service slug. A service added in the back office that is not
- * listed here falls back to the generic briefcase rather than crashing on an
- * undefined component — an editor should never be able to break the header.
- */
-const SERVICE_ICONS: Record<string, typeof FileText> = {
-  "business-permit": FileText,
-  "expatriate-quota": Users,
-  "e-cerpac": IdCard,
-  "e-visas": Plane,
-  training: GraduationCap,
-};
 
 /**
  * `calendarUrl` arrives as a prop rather than being imported: this is a
@@ -188,7 +168,9 @@ function ServicesMegaMenu({ services }: { services: ServiceSummary[] }) {
 }
 
 function ServiceCard({ service }: { service: ServiceSummary }) {
-  const Icon = SERVICE_ICONS[service.slug] ?? Briefcase;
+  // The icon is chosen per service in the back office, so a new service
+  // arrives with its own rather than falling back to a generic one.
+  const Icon = iconFor(service.menuIcon);
   return (
     <Link
       href={`/services/${service.slug}`}

@@ -85,6 +85,29 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: "Call to Action",
+          description:
+            "The dark banner at the foot of the home page and the services index. It lives here rather than on either page because both show the same thing.",
+          fields: [
+            { name: "ctaHeading", type: "text", required: true },
+            {
+              name: "ctaBody",
+              type: "textarea",
+              required: true,
+              admin: {
+                description:
+                  "A line break in this field renders as a line break on the page.",
+              },
+            },
+            {
+              name: "ctaButtonLabel",
+              type: "text",
+              required: true,
+              admin: { description: "Links to the booking URL above." },
+            },
+          ],
+        },
+        {
           label: "Social",
           fields: [
             { name: "linkedin", type: "text" },

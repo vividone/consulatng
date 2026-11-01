@@ -16,6 +16,7 @@ import { Services } from "./cms/collections/Services";
 import { Staff } from "./cms/collections/Staff";
 import { TeamMembers } from "./cms/collections/TeamMembers";
 import { Testimonials } from "./cms/collections/Testimonials";
+import { HomePage } from "./cms/globals/HomePage";
 import { SiteSettings } from "./cms/globals/SiteSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -85,7 +86,7 @@ export default buildConfig({
     Staff,
   ],
 
-  globals: [SiteSettings],
+  globals: [HomePage, SiteSettings],
 
   /**
    * Media storage.

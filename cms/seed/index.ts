@@ -50,6 +50,7 @@ import {
   TESTIMONIALS,
 } from "./snapshot";
 import { SERVICES } from "./services";
+import { CTA_BANNER, HOME_PAGE, SERVICE_MENU_ICONS } from "./home";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(dirname, "../..");
@@ -322,6 +323,7 @@ async function seedServices(payload: Payload) {
         slug: svc.slug,
         order: svc.order,
         summary: svc.summary,
+        menuIcon: SERVICE_MENU_ICONS[svc.slug] ?? "briefcase",
         covers: svc.covers.map((label) => ({ label })),
         cardImage: await media(svc.cardImage, svc.title),
 
@@ -374,16 +376,64 @@ async function seedSiteSettings(payload: Payload) {
 
   // Only populate an untouched global. Once it has a description somebody
   // has saved it, and overwriting would discard their edits.
-  if (current?.description) {
-    note("site-settings", false);
+  if (!current?.description) {
+    await payload.updateGlobal({
+      slug: "site-settings",
+      data: { ...SITE_SETTINGS, ...CTA_BANNER },
+    });
+    note("site-settings", true);
     return;
   }
 
+  /*
+   * Backfill only.
+   *
+   * The CTA banner fields were added after this global already existed on
+   * every environment, so the create-if-missing guard above would skip them
+   * forever and the banner would render empty. Fill the ones that are still
+   * blank and touch nothing else — a settings record someone has edited must
+   * come out of a seed exactly as they left it.
+   */
+  const missing = Object.fromEntries(
+    Object.entries(CTA_BANNER).filter(
+      ([key]) => !current[key as keyof typeof current],
+    ),
+  );
+  if (Object.keys(missing).length > 0) {
+    await payload.updateGlobal({ slug: "site-settings", data: missing });
+    payload.logger.info(
+      `[seed] Backfilled site settings: ${Object.keys(missing).join(", ")}`,
+    );
+  }
+  note("site-settings", false);
+}
+
+async function seedHomePage(payload: Payload) {
+  const current = await payload.findGlobal({ slug: "home-page" });
+
+  // Same create-if-missing rule as the other globals: a saved heading means
+  // somebody has edited this page and the seed must leave it alone.
+  if (current?.heroTitle) {
+    note("home-page", false);
+    return;
+  }
+
+  const { welcomeImage, keywords, ...rest } = HOME_PAGE;
   await payload.updateGlobal({
-    slug: "site-settings",
-    data: SITE_SETTINGS,
+    slug: "home-page",
+    data: {
+      ...rest,
+      keywords: keywords.map((keyword) => ({ keyword })),
+      // Decorative on the page (rendered aria-hidden with an empty alt), but
+      // the media library still requires a label so staff can identify it.
+      welcomeImage: await ensureMedia(
+        payload,
+        welcomeImage,
+        "Consulat welcome illustration",
+      ),
+    },
   });
-  note("site-settings", true);
+  note("home-page", true);
 }
 
 /* -------------------------------------------------------------------------
@@ -406,6 +456,7 @@ async function main() {
   await seedClientLogos(payload);
   await seedPosts(payload);
   await seedServices(payload);
+  await seedHomePage(payload);
   await seedSiteSettings(payload);
 
   const names = [...new Set([...Object.keys(created), ...Object.keys(skipped)])].sort();

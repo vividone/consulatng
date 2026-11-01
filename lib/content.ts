@@ -22,6 +22,7 @@ import config from "@payload-config";
 import type {
   ClientLogo,
   Faq,
+  HomePage,
   Media,
   Post,
   Service,
@@ -63,6 +64,15 @@ export function resolveImage(
 }
 
 /* -------------------------------------------------------------------------
+ * Home page
+ * ---------------------------------------------------------------------- */
+
+export const getHomePage = cache(async (): Promise<HomePage> => {
+  const payload = await client();
+  return payload.findGlobal({ slug: "home-page", depth: 1 });
+});
+
+/* -------------------------------------------------------------------------
  * Services
  * ---------------------------------------------------------------------- */
 
@@ -80,6 +90,7 @@ export type ServiceSummary = {
   summary: string;
   covers: string[];
   cardImage: ResolvedImage | null;
+  menuIcon: string;
 };
 
 export const getServiceSummaries = cache(
@@ -99,6 +110,7 @@ export const getServiceSummaries = cache(
       summary: doc.summary,
       covers: (doc.covers ?? []).map((c) => c.label),
       cardImage: resolveImage(doc.cardImage),
+      menuIcon: doc.menuIcon,
     }));
   },
 );

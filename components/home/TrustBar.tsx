@@ -19,7 +19,13 @@ import type { ClientLogoView } from "@/lib/content";
  *    overflow has to become scrollable or those users simply never see the
  *    logos past the fold. Hence `motion-reduce:overflow-x-auto` on the mask.
  */
-export function TrustBar({ clients }: { clients: ClientLogoView[] }) {
+export function TrustBar({
+  clients,
+  heading,
+}: {
+  clients: ClientLogoView[];
+  heading: string;
+}) {
   const [paused, setPaused] = useState(false);
   const loop = [...clients, ...clients];
 
@@ -28,7 +34,7 @@ export function TrustBar({ clients }: { clients: ClientLogoView[] }) {
       <div className="container-prose">
         <div className="flex items-center justify-center gap-3">
           <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-grey-500 sm:text-sm">
-            Trusted by Leading Organisations Across the Globe
+            {heading}
           </p>
           <button
             type="button"

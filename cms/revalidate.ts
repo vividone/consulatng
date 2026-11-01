@@ -95,6 +95,11 @@ export const revalidateSettings: GlobalAfterChangeHook = ({ doc }) => {
   return doc;
 };
 
+export const revalidateHomePage: GlobalAfterChangeHook = ({ doc }) => {
+  purge(["/"]);
+  return doc;
+};
+
 /**
  * Posts need the index and their own page, and the sitemap entry that lists
  * them. A slug change has to purge the old path too, or the previous URL

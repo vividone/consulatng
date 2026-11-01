@@ -1,39 +1,19 @@
-import {
-  Clock,
-  Ear,
-  HeartHandshake,
-  Shield,
-  Sparkles,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
+import { iconFor } from "@/components/shared/icons";
 
 /**
  * Row of icon cards. Extracted from the Training page's PILLARS block so it
  * can be driven from the CMS.
  *
- * Icons are a fixed lookup rather than a free-text field: an icon is a React
- * component that has to be bundled, so an editor typing an arbitrary name
- * could only ever produce a blank square. The Services collection offers the
- * same six as a dropdown.
+ * Icons resolve through the shared registry in components/shared/icons.tsx,
+ * whose keys are derived from the options the back office offers.
  */
-const ICONS = {
-  ear: Ear,
-  sparkles: Sparkles,
-  handshake: HeartHandshake,
-  shield: Shield,
-  clock: Clock,
-  users: Users,
-} satisfies Record<string, LucideIcon>;
-
-export type ServiceHighlightIcon = keyof typeof ICONS;
 
 type Props = {
   heading?: string;
   items: {
     id?: string | null;
-    icon: ServiceHighlightIcon;
+    icon: string;
     title: string;
     body: string;
   }[];
@@ -52,7 +32,7 @@ export function ServiceHighlights({ heading, items }: Props) {
         )}
         <div className="grid gap-6 md:grid-cols-3">
           {items.map((item, i) => {
-            const Icon = ICONS[item.icon] ?? Sparkles;
+            const Icon = iconFor(item.icon);
             return (
               <Reveal key={item.id ?? item.title} delay={i * 100}>
                 <div className="h-full rounded-2xl border border-grey-200 bg-white p-7">

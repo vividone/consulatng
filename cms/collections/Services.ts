@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { isStaff } from "../access";
+import { iconOptions } from "../icon-options";
 import { revalidateService, revalidateServiceOnDelete } from "../revalidate";
 
 /**
@@ -98,6 +99,17 @@ export const Services: CollectionConfig = {
           "Short checklist shown on the service card. Only the first four appear there, so put the most compelling first.",
       },
       fields: [{ name: "label", type: "text", required: true }],
+    },
+    {
+      name: "menuIcon",
+      type: "select",
+      required: true,
+      defaultValue: "briefcase",
+      options: iconOptions,
+      admin: {
+        description:
+          "Shown beside this service in the header's Services menu.",
+      },
     },
     {
       name: "cardImage",
@@ -218,14 +230,8 @@ export const Services: CollectionConfig = {
                     description:
                       "Icons are a fixed list because each maps to a drawing that ships with the site.",
                   },
-                  options: [
-                    { label: "Ear (listening)", value: "ear" },
-                    { label: "Sparkles (quality)", value: "sparkles" },
-                    { label: "Handshake (partnership)", value: "handshake" },
-                    { label: "Shield (compliance)", value: "shield" },
-                    { label: "Clock (speed)", value: "clock" },
-                    { label: "Users (team)", value: "users" },
-                  ],
+                  options: iconOptions,
+
                 },
                 { name: "title", type: "text", required: true },
                 { name: "body", type: "textarea", required: true },

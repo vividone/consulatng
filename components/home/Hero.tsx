@@ -5,9 +5,7 @@ import { FlagMarquee } from "./FlagMarquee";
 import { CountUpStat } from "./CountUpStat";
 import { WorldMap } from "@/components/shared/WorldMap";
 import { getSiteSettings } from "@/lib/content";
-
-const HERO_TITLE =
-  "Your trusted partner for immigration & work permits in Nigeria";
+import type { HomePage } from "@/cms/payload-types";
 
 /**
  * Hero entrance timing. All animations are CSS-driven.
@@ -21,17 +19,22 @@ const SUBTITLE_DELAY_MS = 350;
 const CTAS_DELAY_MS = 550;
 const STATS_BASE_DELAY_MS = 800;
 
-const HERO_TITLE_WORDS = HERO_TITLE.split(" ");
 /**
  * Index AFTER which to force a line break. e.g. break after word index 3
  * ("for") splits the title into:
  *   "Your trusted partner for"
  *   "immigration & work permits in Nigeria"
+ *
+ * Fixed rather than CMS-managed: it is a typographic detail of this one
+ * layout, and the heading reflows sensibly without it on every width.
  */
 const HERO_BREAK_AFTER = 3;
 
-export async function Hero() {
+export async function Hero({ content }: { content: HomePage }) {
   const settings = await getSiteSettings();
+  const heroTitle = content.heroTitle;
+  const heroTitleWords = heroTitle.split(" ");
+  const stats = content.stats ?? [];
 
   return (
     <section className="relative overflow-hidden bg-primary-dark text-white">
@@ -72,10 +75,10 @@ export async function Hero() {
           {/* Animated H1: each word fades + rises with a stagger, and a
               continuous gradient shimmer flows across the heading. */}
           <h1 className="hero-title font-display text-[1.65rem] font-extrabold leading-[1.25] tracking-tight pb-2 sm:pb-3 sm:text-5xl lg:text-6xl xl:text-7xl">
-            <span className="sr-only">{HERO_TITLE}</span>
+            <span className="sr-only">{heroTitle}</span>
             <span aria-hidden className="hero-title-words">
-              {HERO_TITLE_WORDS.flatMap((word, i) => {
-                const isLast = i === HERO_TITLE_WORDS.length - 1;
+              {heroTitleWords.flatMap((word, i) => {
+                const isLast = i === heroTitleWords.length - 1;
                 const wordSpan = (
                   <span
                     key={`${word}-${i}`}
@@ -104,9 +107,7 @@ export async function Hero() {
               textWrap: "balance",
             }}
           >
-            Helping multinationals, investors, and professionals navigate
-            Nigeria&apos;s immigration ecosystem — from business permits to
-            visa procurement.
+            {content.heroSubtitle}
           </p>
 
           <div
@@ -115,20 +116,26 @@ export async function Hero() {
           >
             <Button asChild size="lg">
               <Link href="/services">
-                Explore Our Services <ArrowRight className="h-4 w-4" />
+                {content.heroPrimaryCta} <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="white" size="lg">
               <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
-                Book a Free Consultation
+                {content.heroSecondaryCta}
               </a>
             </Button>
           </div>
 
           <dl className="mx-auto mt-12 grid max-w-xl grid-cols-3 gap-3 border-t border-white/10 pt-6 sm:mt-14 sm:gap-6 sm:pt-8">
-            <CountUpStat target={500}   suffix="+" label="Permits issued"    delayMs={STATS_BASE_DELAY_MS} />
-            <CountUpStat target={1200}  suffix="+" label="Visas processed"   delayMs={STATS_BASE_DELAY_MS + 120} />
-            <CountUpStat target={30}    suffix="+" label="Countries served"  delayMs={STATS_BASE_DELAY_MS + 240} />
+            {stats.map((stat, i) => (
+              <CountUpStat
+                key={stat.id ?? stat.label}
+                target={stat.value}
+                suffix={stat.suffix ?? ""}
+                label={stat.label}
+                delayMs={STATS_BASE_DELAY_MS + i * 120}
+              />
+            ))}
           </dl>
         </div>
       </div>
