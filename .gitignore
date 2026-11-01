@@ -34,3 +34,13 @@ next-env.d.ts
 
 # claude code internals
 .claude/
+
+# local dev postgres data dir
+db/.pgdata/
+
+# payload media uploads (local disk; S3/Blob in production)
+public/uploads/
+
+# NOTE: cms/payload-types.ts is generated but IS committed, on purpose —
+# a fresh clone must typecheck without first running the generator, which
+# needs a live database. Regenerate with `npm run payload:types`.

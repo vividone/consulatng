@@ -1,4 +1,9 @@
 import type { Config } from "tailwindcss";
+// ESM imports, not require(): package.json sets "type": "module" so that
+// Payload's CLI can load payload.config.ts (its richtext-lexical dependency
+// is an ESM graph with top-level await, which require() cannot pull in).
+import tailwindcssAnimate from "tailwindcss-animate";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   content: [
@@ -69,7 +74,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [tailwindcssAnimate, typography],
 };
 
 export default config;
