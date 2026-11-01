@@ -51,6 +51,7 @@ import {
 } from "./snapshot";
 import { SERVICES } from "./services";
 import { CTA_BANNER, HOME_PAGE, SERVICE_MENU_ICONS } from "./home";
+import { ABOUT_PAGE, CONTACT_PAGE, FAQ_PAGE, SERVICES_PAGE } from "./pages";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(dirname, "../..");
@@ -371,6 +372,69 @@ async function seedServices(payload: Payload) {
   }
 }
 
+/**
+ * The per-page globals.
+ *
+ * Each is create-if-missing on a field that is required, so a page an
+ * editor has already saved is never overwritten. Driven from a table rather
+ * than one function each: they differ only in slug, payload and which field
+ * proves the record has been filled in.
+ */
+async function seedPages(payload: Payload) {
+  const editorConfig = await editorConfigFactory.default({
+    config: payload.config,
+  });
+
+  const pages = [
+    {
+      slug: "about-page" as const,
+      guard: "heroTitle",
+      data: {
+        ...ABOUT_PAGE,
+        storyBody: convertMarkdownToLexical({
+          editorConfig,
+          markdown: ABOUT_PAGE.storyBody,
+        }),
+        keywords: ABOUT_PAGE.keywords.map((keyword) => ({ keyword })),
+      },
+    },
+    {
+      slug: "services-page" as const,
+      guard: "heroTitle",
+      data: {
+        ...SERVICES_PAGE,
+        keywords: SERVICES_PAGE.keywords.map((keyword) => ({ keyword })),
+      },
+    },
+    {
+      slug: "faq-page" as const,
+      guard: "heroTitle",
+      data: {
+        ...FAQ_PAGE,
+        keywords: FAQ_PAGE.keywords.map((keyword) => ({ keyword })),
+      },
+    },
+    {
+      slug: "contact-page" as const,
+      guard: "heroTitle",
+      data: {
+        ...CONTACT_PAGE,
+        keywords: CONTACT_PAGE.keywords.map((keyword) => ({ keyword })),
+      },
+    },
+  ];
+
+  for (const page of pages) {
+    const current = await payload.findGlobal({ slug: page.slug });
+    if (current?.[page.guard as keyof typeof current]) {
+      note(page.slug, false);
+      continue;
+    }
+    await payload.updateGlobal({ slug: page.slug, data: page.data });
+    note(page.slug, true);
+  }
+}
+
 async function seedSiteSettings(payload: Payload) {
   const current = await payload.findGlobal({ slug: "site-settings" });
 
@@ -457,6 +521,7 @@ async function main() {
   await seedPosts(payload);
   await seedServices(payload);
   await seedHomePage(payload);
+  await seedPages(payload);
   await seedSiteSettings(payload);
 
   const names = [...new Set([...Object.keys(created), ...Object.keys(skipped)])].sort();

@@ -1,7 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { isStaff } from "../access";
 import { iconOptions } from "../icon-options";
-import { revalidateHomePage } from "../revalidate";
+import { revalidatePage } from "../revalidate";
 
 /**
  * Home page content.
@@ -23,7 +23,7 @@ export const HomePage: GlobalConfig = {
       "Everything on the home page except the testimonials, client logos and service cards, which come from their own collections.",
   },
   access: { read: () => true, update: isStaff },
-  hooks: { afterChange: [revalidateHomePage] },
+  hooks: { afterChange: [revalidatePage("/")] },
   fields: [
     {
       type: "tabs",

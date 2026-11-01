@@ -16,7 +16,10 @@ import { Services } from "./cms/collections/Services";
 import { Staff } from "./cms/collections/Staff";
 import { TeamMembers } from "./cms/collections/TeamMembers";
 import { Testimonials } from "./cms/collections/Testimonials";
+import { AboutPage } from "./cms/globals/AboutPage";
+import { ContactPage } from "./cms/globals/ContactPage";
 import { HomePage } from "./cms/globals/HomePage";
+import { FaqPage, ServicesPage } from "./cms/globals/ListingPages";
 import { SiteSettings } from "./cms/globals/SiteSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -86,7 +89,14 @@ export default buildConfig({
     Staff,
   ],
 
-  globals: [HomePage, SiteSettings],
+  globals: [
+    HomePage,
+    AboutPage,
+    ServicesPage,
+    FaqPage,
+    ContactPage,
+    SiteSettings,
+  ],
 
   /**
    * Media storage.

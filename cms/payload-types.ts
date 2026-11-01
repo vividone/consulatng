@@ -101,10 +101,18 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'home-page': HomePage;
+    'about-page': AboutPage;
+    'services-page': ServicesPage;
+    'faq-page': FaqPage;
+    'contact-page': ContactPage;
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'faq-page': FaqPageSelect<false> | FaqPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
@@ -1025,6 +1033,179 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
+ * Everything on /about except the team members, who are managed under Content.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * Overlaid on the sliding photographs beneath the hero.
+   */
+  bridgeHeading: string;
+  bridgeText: string;
+  storyEyebrow: string;
+  storyTitle: string;
+  storyBody: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  missionEyebrow: string;
+  /**
+   * Shown large on the blue band. One or two sentences reads best.
+   */
+  missionStatement: string;
+  valuesEyebrow: string;
+  valuesTitle: string;
+  /**
+   * Shown in a single row of four on large screens, so four reads best.
+   */
+  values?:
+    | {
+        icon:
+          | 'briefcase'
+          | 'file-text'
+          | 'id-card'
+          | 'plane'
+          | 'graduation-cap'
+          | 'users'
+          | 'globe'
+          | 'clipboard-check'
+          | 'bell'
+          | 'user-check'
+          | 'shield'
+          | 'clock'
+          | 'ear'
+          | 'sparkles'
+          | 'handshake'
+          | 'building';
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  teamEyebrow: string;
+  teamTitle: string;
+  teamIntro: string;
+  /**
+   * Overrides the shared banner heading in Site Settings for this page.
+   */
+  ctaHeading: string;
+  seoTitle: string;
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The banner and introduction on /services. The service cards themselves come from the Services collection.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page".
+ */
+export interface ServicesPage {
+  id: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * Centred paragraph above the service cards.
+   */
+  intro: string;
+  seoTitle: string;
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The banner and closing panel on /faq. The questions themselves are managed under Content → FAQs.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-page".
+ */
+export interface FaqPage {
+  id: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * Overrides the shared banner in Site Settings for this page.
+   */
+  ctaHeading: string;
+  ctaBody: string;
+  seoTitle: string;
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Headings and wording on /contact. The actual contact details come from Site Settings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  infoHeading: string;
+  infoIntro: string;
+  bookingEyebrow: string;
+  bookingHeading: string;
+  bookingBody: string;
+  /**
+   * Links to the booking URL in Site Settings.
+   */
+  bookingButtonLabel: string;
+  formHeading: string;
+  formIntro: string;
+  mapHeading: string;
+  mapIntro: string;
+  seoTitle: string;
+  seoDescription: string;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
@@ -1117,6 +1298,120 @@ export interface HomePageSelect<T extends boolean = true> {
         body?: T;
         id?: T;
       };
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  bridgeHeading?: T;
+  bridgeText?: T;
+  storyEyebrow?: T;
+  storyTitle?: T;
+  storyBody?: T;
+  missionEyebrow?: T;
+  missionStatement?: T;
+  valuesEyebrow?: T;
+  valuesTitle?: T;
+  values?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  teamEyebrow?: T;
+  teamTitle?: T;
+  teamIntro?: T;
+  ctaHeading?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  intro?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-page_select".
+ */
+export interface FaqPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  ctaHeading?: T;
+  ctaBody?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroTitle?: T;
+  heroSubtitle?: T;
+  infoHeading?: T;
+  infoIntro?: T;
+  bookingEyebrow?: T;
+  bookingHeading?: T;
+  bookingBody?: T;
+  bookingButtonLabel?: T;
+  formHeading?: T;
+  formIntro?: T;
+  mapHeading?: T;
+  mapIntro?: T;
   seoTitle?: T;
   seoDescription?: T;
   keywords?:

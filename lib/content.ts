@@ -20,9 +20,13 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 
 import type {
+  AboutPage,
   ClientLogo,
+  ContactPage,
   Faq,
+  FaqPage,
   HomePage,
+  ServicesPage,
   Media,
   Post,
   Service,
@@ -64,12 +68,32 @@ export function resolveImage(
 }
 
 /* -------------------------------------------------------------------------
- * Home page
+ * Pages
  * ---------------------------------------------------------------------- */
 
 export const getHomePage = cache(async (): Promise<HomePage> => {
   const payload = await client();
   return payload.findGlobal({ slug: "home-page", depth: 1 });
+});
+
+export const getAboutPage = cache(async (): Promise<AboutPage> => {
+  const payload = await client();
+  return payload.findGlobal({ slug: "about-page" });
+});
+
+export const getServicesPage = cache(async (): Promise<ServicesPage> => {
+  const payload = await client();
+  return payload.findGlobal({ slug: "services-page" });
+});
+
+export const getFaqPage = cache(async (): Promise<FaqPage> => {
+  const payload = await client();
+  return payload.findGlobal({ slug: "faq-page" });
+});
+
+export const getContactPage = cache(async (): Promise<ContactPage> => {
+  const payload = await client();
+  return payload.findGlobal({ slug: "contact-page" });
 });
 
 /* -------------------------------------------------------------------------

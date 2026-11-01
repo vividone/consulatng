@@ -4,37 +4,40 @@ import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/metadata";
-import { getSiteSettings, whatsapp } from "@/lib/content";
+import { getContactPage, getSiteSettings, whatsapp } from "@/lib/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Contact Consulat — Book an Immigration Consultation",
-  description:
-    "Get in touch with Consulat for immigration consulting, visa services, and expatriate management in Lagos, Nigeria.",
-  path: "/contact",
-  keywords: ["contact consulat", "immigration consultant Lagos", "book consultation Nigeria"],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getContactPage();
+  return buildMetadata({
+    title: content.seoTitle,
+    description: content.seoDescription,
+    path: "/contact",
+    keywords: (content.keywords ?? []).map((k) => k.keyword),
+  });
+}
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
+  const [content, settings] = await Promise.all([
+    getContactPage(),
+    getSiteSettings(),
+  ]);
   const wa = whatsapp(settings);
 
   return (
     <>
       <PageHero
-        eyebrow="Immigration Simplified"
-        title="Get in Touch"
-        subtitle="Whether you have a specific immigration need or want to discuss ongoing support for an ongoing or future project, our team is ready to help."
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        subtitle={content.heroSubtitle}
       />
 
       <section className="bg-white py-14 sm:py-20">
         <div className="container-prose grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-12">
           <div>
             <h2 className="font-display text-2xl font-bold text-grey-900">
-              Contact Information
+              {content.infoHeading}
             </h2>
-            <p className="mt-2 text-grey-700">
-              Reach out by phone, WhatsApp, or email — we respond within 24 hours.
-            </p>
+            <p className="mt-2 text-grey-700">{content.infoIntro}</p>
 
             <ul className="mt-8 space-y-5">
               <li className="flex gap-4">
@@ -117,17 +120,15 @@ export default async function ContactPage() {
 
             <div className="mt-10 rounded-2xl border border-grey-200 bg-grey-50 p-6">
               <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent">
-                <Calendar className="h-4 w-4" /> Book a free consultation
+                <Calendar className="h-4 w-4" /> {content.bookingEyebrow}
               </p>
               <h3 className="mt-2 font-display text-lg font-bold text-grey-900">
-                Prefer to speak directly with a consultant?
+                {content.bookingHeading}
               </h3>
-              <p className="mt-2 text-sm text-grey-700">
-                Schedule a 30-minute call at a time that works for you.
-              </p>
+              <p className="mt-2 text-sm text-grey-700">{content.bookingBody}</p>
               <Button asChild variant="secondary" size="sm" className="mt-4">
                 <a href={settings.calendarUrl} target="_blank" rel="noopener noreferrer">
-                  Book a Call →
+                  {content.bookingButtonLabel}
                 </a>
               </Button>
             </div>
@@ -135,11 +136,9 @@ export default async function ContactPage() {
 
           <div>
             <h2 className="font-display text-2xl font-bold text-grey-900">
-              Send us an enquiry
+              {content.formHeading}
             </h2>
-            <p className="mt-2 text-grey-700">
-              Fill in the form below and our team will reply within one business day.
-            </p>
+            <p className="mt-2 text-grey-700">{content.formIntro}</p>
             <div className="mt-6">
               <ContactForm />
             </div>
@@ -151,11 +150,9 @@ export default async function ContactPage() {
         <div className="container-prose">
           <div className="mb-6 max-w-2xl">
             <h2 className="font-display text-2xl font-bold text-grey-900">
-              Find Our Office
+              {content.mapHeading}
             </h2>
-            <p className="mt-2 text-grey-700">
-              Located in the heart of Lagos.
-            </p>
+            <p className="mt-2 text-grey-700">{content.mapIntro}</p>
           </div>
           <div className="aspect-[16/7] w-full overflow-hidden rounded-2xl border border-grey-200 shadow-sm">
             <iframe

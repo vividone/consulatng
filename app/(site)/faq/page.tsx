@@ -9,19 +9,21 @@ import {
 } from "@/components/ui/accordion";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
-import { getFaqs } from "@/lib/content";
+import { getFaqPage, getFaqs } from "@/lib/content";
 import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = buildMetadata({
-  title: "FAQs — Immigration & Work Permits in Nigeria — Consulat",
-  description:
-    "Answers to common questions about business permits, expatriate quotas, e-CERPAC, visas, and immigration compliance in Nigeria.",
-  path: "/faq",
-  keywords: ["Nigeria immigration FAQ", "work permit questions", "e-CERPAC FAQ"],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getFaqPage();
+  return buildMetadata({
+    title: content.seoTitle,
+    description: content.seoDescription,
+    path: "/faq",
+    keywords: (content.keywords ?? []).map((k) => k.keyword),
+  });
+}
 
 export default async function FAQPage() {
-  const faqs = await getFaqs();
+  const [content, faqs] = await Promise.all([getFaqPage(), getFaqs()]);
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -37,9 +39,9 @@ export default async function FAQPage() {
     <>
       <JsonLd data={faqSchema} />
       <PageHero
-        eyebrow="Immigration Simplified"
-        title="Frequently Asked Questions"
-        subtitle="Answers to the most common questions about immigration, work permits, and residency in Nigeria."
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        subtitle={content.heroSubtitle}
       />
 
       <section className="bg-white py-14 sm:py-20">
@@ -57,10 +59,7 @@ export default async function FAQPage() {
         </div>
       </section>
 
-      <CTABanner
-        heading="Still have a question?"
-        subtext="Reach out and our team will get back to you within 24 hours."
-      />
+      <CTABanner heading={content.ctaHeading} subtext={content.ctaBody} />
     </>
   );
 }

@@ -95,10 +95,16 @@ export const revalidateSettings: GlobalAfterChangeHook = ({ doc }) => {
   return doc;
 };
 
-export const revalidateHomePage: GlobalAfterChangeHook = ({ doc }) => {
-  purge(["/"]);
-  return doc;
-};
+/**
+ * Purges a single page. Used by the per-page globals, each of which backs
+ * exactly one route, so there is nothing else to invalidate.
+ */
+export function revalidatePage(path: string): GlobalAfterChangeHook {
+  return ({ doc }) => {
+    purge([path]);
+    return doc;
+  };
+}
 
 /**
  * Posts need the index and their own page, and the sitemap entry that lists
