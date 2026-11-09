@@ -19,7 +19,14 @@ import { SITE } from "@/lib/constants";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  return (await getPosts()).map((p) => ({ slug: p.slug }));
+  // getPosts() already excludes drafts, which is what kept a slug-less
+  // autosaved draft out of here. The guard stays because a bad slug should
+  // cost one missing page, not the whole deployment: Next fails the entire
+  // build if any param is not a string.
+  return (await getPosts())
+    .map((p) => p.slug)
+    .filter((slug): slug is string => typeof slug === "string" && slug !== "")
+    .map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

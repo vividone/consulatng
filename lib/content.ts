@@ -254,10 +254,27 @@ export const getTeam = cache(async (): Promise<TeamMemberView[]> => {
  * Blog posts
  * ---------------------------------------------------------------------- */
 
+/**
+ * Published posts only.
+ *
+ * The `_status` filter is load-bearing, not defensive. Posts have drafts
+ * enabled, and the collection's `isPublishedOrStaff` read rule does NOT
+ * apply here: the Local API runs with `overrideAccess: true` by default, so
+ * access control is skipped and unpublished drafts come back like anything
+ * else.
+ *
+ * Two things go wrong without it. An unfinished draft appears on /blog and
+ * in the sitemap, which is a content leak. Worse, Payload does not enforce
+ * required fields on drafts, so clicking "Create New" in the back office and
+ * letting autosave fire produces a row with a null slug — and that fails the
+ * production build outright in generateStaticParams, because Next reports a
+ * null param as "received object".
+ */
 export const getPosts = cache(async (): Promise<Post[]> => {
   const payload = await client();
   const { docs } = await payload.find({
     collection: "posts",
+    where: { _status: { equals: "published" } },
     sort: "-publishedAt",
     limit: 500,
     pagination: false,
@@ -270,7 +287,11 @@ export const getPostBySlug = cache(async (slug: string): Promise<Post | null> =>
   const payload = await client();
   const { docs } = await payload.find({
     collection: "posts",
-    where: { slug: { equals: slug } },
+    // Published only, for the same reason as getPosts above: without it an
+    // unpublished draft is readable by anyone who guesses its URL.
+    where: {
+      and: [{ slug: { equals: slug } }, { _status: { equals: "published" } }],
+    },
     limit: 1,
     pagination: false,
     depth: 1,
